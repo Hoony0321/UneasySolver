@@ -24,10 +24,10 @@ public class ChatRoom extends BaseTimeEntity {
     private Member solver;
 
     // 생성 메서드 //
-    public static ChatRoom createRoom(Post post, Member problemer, Member solver ){
+    public static ChatRoom createRoom(Post post, Member solver ){
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.post = post;
-        chatRoom.setProblemer(problemer);
+        chatRoom.setProblemer(post.getAuthor());
         chatRoom.setSolver(solver);
 
         return chatRoom;

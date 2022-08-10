@@ -52,13 +52,12 @@ public class Post extends BaseTimeEntity{
         member.getPosts().add(this);
     }
 
-    // 생성 메서드 //
-    public static Post createPost(Member member, Target target, PostContent postContent, String title, Integer uneasyIdx, String region){
-        Post post = new Post();
-        post.setAuthor(member);
 
-        post.target = target;
-        post.postContent = postContent;
+
+    // 생성 메서드 //
+    public static Post createPost(String title, Integer uneasyIdx, String region){
+        Post post = new Post();
+
         post.title = title;
         post.uneasyIdx = uneasyIdx;
         post.region = region;
@@ -69,6 +68,14 @@ public class Post extends BaseTimeEntity{
     // set 메서드 //
     public void setComment(Comment comment){
         this.comments.add(comment);
+    }
+
+    public void setTarget(Target target){
+        this.target = target;
+    }
+
+    public void setPostContent(PostContent postContent){
+        this.postContent = postContent;
     }
 
 

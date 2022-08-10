@@ -2,7 +2,9 @@ package com.hunny.uneasySolver.service;
 
 import com.hunny.uneasySolver.domain.ChatRoom;
 import com.hunny.uneasySolver.domain.Member;
+import com.hunny.uneasySolver.domain.Message;
 import com.hunny.uneasySolver.domain.Post;
+import com.hunny.uneasySolver.repository.MessageRepository;
 import com.hunny.uneasySolver.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,16 +16,22 @@ import java.util.List;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final MessageRepository messageRepository;
 
-    public RoomService(RoomRepository roomRepository) {
+    public RoomService(RoomRepository roomRepository, MessageRepository messageRepository) {
         this.roomRepository = roomRepository;
+        this.messageRepository = messageRepository;
     }
 
-    public Long createRoom(Post post, Member problemer, Member solver){
-        ChatRoom room = ChatRoom.createRoom(post, problemer, solver);
+    public Long createRoom(Post post, Member solver){
+        ChatRoom room = ChatRoom.createRoom(post, solver);
         roomRepository.save(room);
 
         return room.getId();
+    }
+
+    public Long createMessage(Message message){
+        return messageRepository.save(message);
     }
 
     public ChatRoom findById(Long id){

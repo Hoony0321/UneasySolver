@@ -22,7 +22,10 @@ public class PostService {
     }
 
     public Long publishPost(Member author, Target target, PostContent postContent,String title, Integer uneasyIdx, String region){
-        Post post = Post.createPost(author, target, postContent, title, uneasyIdx, region);
+        Post post = Post.createPost(title, uneasyIdx, region);
+        post.setAuthor(author);
+        post.setTarget(target);
+        post.setPostContent(postContent);
         return postRepository.save(post);
     }
 
