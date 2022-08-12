@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+  <title>Uneasy</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader" />
+  <div class="jumbotron">
+    <h1 th:text="${code}"/>
+    <p th:text="${msg}"/>
+  </div>
+  <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container --></body>
+</html>

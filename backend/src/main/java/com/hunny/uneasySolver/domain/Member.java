@@ -1,5 +1,6 @@
 package com.hunny.uneasySolver.domain;
 
+import com.hunny.uneasySolver.form.MemberCreateForm;
 import lombok.Getter;
 
 import javax.persistence.Column;
@@ -30,7 +31,7 @@ public class Member {
     private String nickname;
 
     @NotNull
-    private String region;
+    private String address;
 
     private Integer age;
 
@@ -62,12 +63,39 @@ public class Member {
         member.email = email;
         member.password = password;
         member.nickname = nickname;
-        member.region = region;
+        member.address = region;
         member.job = job;
         member.age = age;
         member.sex = sex;
         member.phoneNumber = phoneNumber;
         member.point = point;
+
+        return member;
+    }
+
+    public static Member createMemberByForm(MemberCreateForm form){
+        Member member = new Member();
+        member.email = form.getEmail();
+        member.password = form.getPassword();
+        member.nickname = form.getNickname();
+        member.address = form.getAddress();
+        member.age = form.getAge();
+        member.sex = form.getSex().equals("남") ? true : false;
+        member.phoneNumber = form.getPhoneNumber();
+
+        return member;
+    }
+
+    //TODO 배포 시 삭제할 것
+    public static Member createDummyMember(Integer num){
+        Member member = new Member();
+        member.email = "dummyEmail" + num;
+        member.password = "dummyPW" + num;
+        member.nickname = "dummyNickname" + num;
+        member.address = "dummyAddress" + num;
+        member.age = num;
+        member.sex = false;
+        member.phoneNumber = "010-0000-000" + num;
 
         return member;
     }

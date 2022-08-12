@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Uneasy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="jumbotron">
+        <form role="form" action="/members/new" th:object="${memberForm}"
+              method="post">
+            <div class="form-group">
+                <label th:for="email">이메일</label>
+                <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요"/>
+            </div>
+            <div class="form-group">
+                <label th:for="password">비밀번호</label>
+                <input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요."/>
+            </div>
+            <div class="form-group">
+                <label th:for="nickname">닉네임</label>
+                <input type="text" th:field="*{nickname}" class="form-control" placeholder="닉네임을 입력하세요"/>
+            </div>
+            <div class="form-group">
+                <label th:for="age">나이(선택)</label>
+                <input type="number" th:field="*{age}" class="form-control" placeholder="나이를 입력하세요"/>
+            </div>
+            <div class="form-group">
+                <label th:for="sex">성별(선택)</label>
+                <select th:field="*{sex}" class="form-control">
+                    <option selected th:value="남">남</option>
+                    <option th:value="여">여</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label th:for="jobCode">직업(선택)</label>
+                <input type="number" th:field="*{jobCode}" class="form-control" placeholder="직업 번호를 입력하세요" disabled/>
+            </div>
+            <div class="form-group">
+                <label th:for="address">주소</label>
+                <input type="text" th:field="*{address}" class="form-control"
+                       placeholder="주소를 입력하세요">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <br/>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container --></body>
+</html>

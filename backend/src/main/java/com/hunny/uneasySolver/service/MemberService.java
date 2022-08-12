@@ -1,6 +1,8 @@
 package com.hunny.uneasySolver.service;
 
 import com.hunny.uneasySolver.domain.Member;
+import com.hunny.uneasySolver.exception.LoginException;
+import com.hunny.uneasySolver.form.MemberLoginForm;
 import com.hunny.uneasySolver.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,5 +32,12 @@ public class MemberService {
 
     public List<Member> findAll(){
         return memberRepository.findAll();
+    }
+
+    public Member login(MemberLoginForm form) {
+        Optional<Member> findMember = memberRepository.findByEmail(form.getEmail());
+        if(findMember.isEmpty()){throw new LoginException("로그인에 실패하셨습니다.");}
+
+        return findMember.get();
     }
 }
