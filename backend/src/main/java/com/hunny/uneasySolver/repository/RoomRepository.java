@@ -23,6 +23,11 @@ public class RoomRepository {
         return room.getId();
     }
 
+    public List<ChatRoom> findAll(){
+        return em.createQuery("select c from ChatRoom c")
+                .getResultList();
+    }
+
     public Optional<ChatRoom> findById(Long id){
         ChatRoom room = em.find(ChatRoom.class, id);
         return Optional.ofNullable(room);

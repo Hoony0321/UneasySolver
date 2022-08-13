@@ -1,9 +1,8 @@
 package com.hunny.uneasySolver.controller;
 
 import com.hunny.uneasySolver.session.LoginSessionManager;
-import com.hunny.uneasySolver.session.MemberInfo_simple;
+import com.hunny.uneasySolver.domain.dto.MemberDTO;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +18,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(HttpServletRequest request){
-
-        MemberInfo_simple info = sessionManager.getSession(request);
-        if(info != null) System.out.println(info.getEmail());
-
+//        MemberDTO info = sessionManager.getSession(request);
+//        if(info != null) System.out.println(info.getEmail());
 
         return "home";
     }

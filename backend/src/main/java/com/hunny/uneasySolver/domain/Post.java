@@ -34,7 +34,7 @@ public class Post extends BaseTimeEntity{
     @NotNull
     private PostContent postContent;
 
-    private String region;
+    private String address;
 
     @NotNull
     private Boolean visible = false; //게시 여부 // default = false;
@@ -55,12 +55,12 @@ public class Post extends BaseTimeEntity{
 
 
     // 생성 메서드 //
-    public static Post createPost(String title, Integer uneasyIdx, String region){
+    public static Post createPost(String title, Integer uneasyIdx, String address){
         Post post = new Post();
 
         post.title = title;
         post.uneasyIdx = uneasyIdx;
-        post.region = region;
+        post.address = address;
 
         return post;
     }

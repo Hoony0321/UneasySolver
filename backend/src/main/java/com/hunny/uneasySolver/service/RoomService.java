@@ -23,6 +23,10 @@ public class RoomService {
         this.messageRepository = messageRepository;
     }
 
+    public List<ChatRoom> findAll(){
+        return roomRepository.findAll();
+    }
+
     public Long createRoom(Post post, Member solver){
         ChatRoom room = ChatRoom.createRoom(post, solver);
         roomRepository.save(room);

@@ -1,4 +1,4 @@
-package com.hunny.uneasySolver.session;
+package com.hunny.uneasySolver.domain.dto;
 
 
 import com.hunny.uneasySolver.domain.Member;
@@ -6,14 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class MemberInfo_simple {
+public class MemberDTO {
 
     private Long id;
     private String email;
     private String nickname;
 
-    public static MemberInfo_simple createMemberCookie(Member member){
-        MemberInfo_simple cookie = new MemberInfo_simple();
+    public static MemberDTO createMemberCookie(Member member){
+        MemberDTO cookie = new MemberDTO();
         cookie.setId(member.getId());
         cookie.setEmail(member.getEmail());
         cookie.setNickname(member.getNickname());

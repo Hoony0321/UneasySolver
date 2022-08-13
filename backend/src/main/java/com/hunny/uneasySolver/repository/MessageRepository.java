@@ -1,5 +1,6 @@
 package com.hunny.uneasySolver.repository;
 
+import com.hunny.uneasySolver.domain.ChatRoom;
 import com.hunny.uneasySolver.domain.Message;
 import org.springframework.stereotype.Repository;
 
@@ -24,6 +25,12 @@ public class MessageRepository {
     public Optional<Message> findById(Long id){
         Message message = em.find(Message.class, id);
         return Optional.ofNullable(message);
+    }
+
+    public List<Message> findByRoom(ChatRoom room){
+        return em.createQuery("select m from Message m where m.chatRoom = :room", Message.class)
+                .setParameter("room", room)
+                .getResultList();
     }
 
     public List<Message> findAll(){

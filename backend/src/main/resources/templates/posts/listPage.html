@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Uneasy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>작성자</th>
+                <th>불편 대상</th>
+                <th>제목</th>
+                <th>불편 지수</th>
+                <th>불편 내용</th>
+                <th>주소</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <td th:text="${post.author.getNickname()}"></td>
+                <td th:text="${post.target.getName()}"></td>
+                <td th:text="${post.title}"></td>
+                <td th:text="${post.uneasyIdx}"></td>
+                <td th:text="${post.getPostContent().content}"></td>
+                <td th:text="${post.getAddress()}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container --></body>
+</html>
