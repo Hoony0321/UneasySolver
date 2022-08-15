@@ -1,2 +1,2 @@
 // * Common
-export const APP_TITLE = "판소리";
+export const APP_TITLE = "해결사";

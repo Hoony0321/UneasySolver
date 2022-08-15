@@ -1,16 +1,17 @@
-import { NextPage } from "next"
-import React from "react"
+import { NextPage } from "next";
+import React from "react";
 
-import { Heading, Box } from "@chakra-ui/react"
+import { Flex } from "@chakra-ui/react";
+import Section1 from "./components/home/section1";
+import Section2 from "./components/home/section2";
 
-const Home : NextPage = () => {
-
-    return(
-        <Box>
-            <Heading>THIS IS HOME PAGE.</Heading>
-        </Box>
-    )
-
-}
+const Home: NextPage = () => {
+	return (
+		<Flex flexDir={"column"}>
+			<Section1 />
+			<Section2 />
+		</Flex>
+	);
+};
 
 export default Home;

@@ -1,6 +1,5 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
-	Box,
 	Center,
 	Circle,
 	Flex,
@@ -10,32 +9,16 @@ import {
 	MenuGroup,
 	MenuItem,
 	MenuList,
-	Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
+import { Logo } from "../components/common/logo";
+import Container from "../components/common/container";
+import Wrapper from "../components/common/wrapper";
 
 interface INavbar {
 	path: string;
 }
-
-const Logo = () => {
-	return (
-		<Link href="/">
-			<Flex
-				w="200px"
-				h="50px"
-				bg="gray.100"
-				alignItems="center"
-				borderRadius={10}
-				border="2px solid black">
-				<Text fontSize={20} fontWeight="bold" mx="auto">
-					LOGO
-				</Text>
-			</Flex>
-		</Link>
-	);
-};
 
 const MenuBox = () => {
 	return (
@@ -65,30 +48,27 @@ const Navbar = ({ path }: INavbar) => {
 	const router = useRouter();
 
 	return (
-		<Box
+		<Wrapper
 			as="nav"
-			w="100%"
 			textAlign="center"
+			py={6}
 			bg="white"
 			boxShadow="base"
-			py={4}
-			px={12}
 			borderBottomWidth="1px"
 			borderBottomStyle="solid"
-			borderBottomColor="gray.200">
-			<Flex
-				maxW={"container.lg"}
-				w={{ base: "100%", lg: "80%" }}
-				m="auto"
+			borderBottomColor="gray.400">
+			<Container
+				flexDir="row"
 				justifyContent="space-between"
 				alignItems="center">
 				<Logo />
-				<Flex gap={4} alignItems="center">
+				<Flex gap={4} alignItems="center" fontSize={"1.2em"}>
 					<MenuBox />
-					<Link href="/login">로그인/회원가입</Link>
+					<Link href="/#">새 글 쓰기</Link>
+					<Link href="/#">로그인/회원가입</Link>
 				</Flex>
-			</Flex>
-		</Box>
+			</Container>
+		</Wrapper>
 	);
 };
 

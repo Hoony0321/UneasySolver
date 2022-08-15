@@ -1,53 +1,56 @@
 import React from "react";
 import { Box, Flex, HStack, Link, Text } from "@chakra-ui/react";
+import Wrapper from "../components/common/wrapper";
+import Container from "../components/common/container";
 
 interface IFooter {}
 
 const Footer = ({ ...props }: IFooter) => {
 	return (
-		<Box
+		<Wrapper
 			as="footer"
-			w="100%"
-			textAlign="center"
 			py={16}
-			px={12}
 			bg="gray.50"
 			borderTopWidth="1px"
 			borderTopStyle="solid"
 			borderTopColor="gray.200">
-			<Box w={{ base: "100%", lg: "80%" }} maxW="container.lg" m="auto">
-				<HStack fontSize={14} fontWeight="bold" color="gray.600" gap={4}>
-					<Link href="#">회사소개</Link>
-					<Link href="#">서비스 소개</Link>
-					<Link href="#">이용약관</Link>
-					<Link href="#">개인정보처리방침</Link>
-					<Link href="#">고객센터</Link>
-				</HStack>
-				<Box fontSize={12} color="gray.600" textAlign="left" mt={2}>
-					<Text>
-						(주)GO Easy! 대표자명 : ㅇㅇㅇ 사업자번호 : 123-45-78912
-						통신판매번호 : 2022-ㅇㅇㅇㅇ-1234
-					</Text>
-					<Text>
-						주소 : 서울특별시 강남구 테헤란로 311 이메일 : test@test.com
+			<Container
+				flexDir={{ base: "column", md: "row" }}
+				justifyContent={{ base: "center", md: "space-between" }}
+				alignItems="center"
+				gap={6}>
+				<Box>
+					<Text fontSize={"1em"}>All About Inconvenience...</Text>
+					<Text fontSize={"1.2em"} fontWeight="bold">
+						세상의 모든 불편함을 위한, 해결사
 					</Text>
 				</Box>
-				<Flex
-					w="100%"
-					justifyContent="space-between"
-					alignItems="center"
-					mt={8}>
-					<Flex gap={2} alignItems="center">
-						<Box w="100px" h="30px" bg="gray.200">
-							<Text>LOGO</Text>
-						</Box>
-						<Text fontSize={8} fontWeight="bold">
-							by고이지(C) Law&Company Co., Ltd. ALL RIGHTS RESERVED.
-						</Text>
-					</Flex>
-				</Flex>
-			</Box>
-		</Box>
+
+				<Box>
+					<Text fontSize={"1.2em"} fontWeight="bold">
+						Company
+					</Text>
+					<Text fontSize={"0.8em"}>(주)해결사 대표 : 고대훈</Text>
+					<Text fontSize={"0.8em"}>사업자번호 : 010-1234-5678</Text>
+					<Text fontSize={"0.8em"}>
+						서울특별시 강남구 삼성로 119길 56(삼성동)
+					</Text>
+					<Text fontSize={"0.8em"}>
+						Inconvenience Solver all right reserved
+					</Text>
+				</Box>
+
+				<Box>
+					<Text fontSize={"1.2em"} fontWeight="bold">
+						CS Center
+					</Text>
+					<Text fontSize={"0.8em"}>02-1234-5678</Text>
+					<Text fontSize={"0.8em"}>Email : eogns0321@gmail.com</Text>
+					<Text fontSize={"0.8em"}>Fax: 02-123-4567</Text>
+					<Text fontSize={"0.8em"}>10:00 ~ 21:00 365일 연중무휴</Text>
+				</Box>
+			</Container>
+		</Wrapper>
 	);
 };
 
