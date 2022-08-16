@@ -43,7 +43,7 @@ const Category = () => {
 
 const Section2 = () => {
 	return (
-		<Wrapper py={20}>
+		<Wrapper pt={20}>
 			<Container flexDir="column">
 				<Text color="primary" fontWeight="bold" fontSize="1.6em">
 					불편 대상

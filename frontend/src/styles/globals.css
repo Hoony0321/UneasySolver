@@ -24,3 +24,12 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.elipsisText{
+  /* width: 속성에서 설정하기 */ 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
