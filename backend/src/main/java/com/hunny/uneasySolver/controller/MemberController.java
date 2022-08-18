@@ -5,7 +5,7 @@ import com.hunny.uneasySolver.form.MemberCreateForm;
 import com.hunny.uneasySolver.form.MemberLoginForm;
 import com.hunny.uneasySolver.service.MemberService;
 import com.hunny.uneasySolver.session.LoginSessionManager;
-import com.hunny.uneasySolver.domain.dto.MemberDTO;
+import com.hunny.uneasySolver.dto.MemberDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,17 +52,17 @@ public class MemberController {
         return "/members/loginPage";
     }
 
-    @PostMapping("members/login")
-    public void handleLogin(HttpServletResponse response, MemberLoginForm form){
-        Member result = memberService.login(form);
-        MemberDTO info = MemberDTO.createMemberCookie(result);
-        
-        sessionManager.createSession(info,response);
-        try {
-            response.sendRedirect("/");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    @PostMapping("members/login")
+//    public void handleLogin(HttpServletResponse response, MemberLoginForm form){
+//        Member result = memberService.login(form);
+//        MemberDTO info = MemberDTO.createMemberCookie(result);
+//
+//        sessionManager.createSession(info,response);
+//        try {
+//            response.sendRedirect("/");
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
 }

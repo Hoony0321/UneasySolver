@@ -1,14 +1,13 @@
 package com.hunny.uneasySolver.session;
 
 import com.hunny.uneasySolver.domain.Member;
-import com.hunny.uneasySolver.domain.dto.MemberDTO;
+import com.hunny.uneasySolver.dto.MemberDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
-import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.*;

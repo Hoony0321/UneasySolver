@@ -1,5 +1,6 @@
 package com.hunny.uneasySolver.domain;
 
+import com.hunny.uneasySolver.dto.MemberRegisterRequest;
 import com.hunny.uneasySolver.form.MemberCreateForm;
 import lombok.Getter;
 
@@ -73,6 +74,21 @@ public class Member {
         return member;
     }
 
+    public static Member registerMember(MemberRegisterRequest request){
+        Member member = new Member();
+        member.email = request.getEmail();
+        member.password = request.getPassword();
+        member.nickname = request.getNickname();
+        member.address = request.getAddress();
+        member.job = null; // TODO 추후에 로직 추가
+        member.age = request.getAge();
+        member.sex = request.getSex();
+        member.phoneNumber = request.getPhoneNumber();
+        member.point = 0;
+
+        return member;
+    }
+
     public static Member createMemberByForm(MemberCreateForm form){
         Member member = new Member();
         member.email = form.getEmail();
@@ -107,4 +123,9 @@ public class Member {
     public void setUneasyRoom(ChatRoom room){ this.uneasyRoom.add(room); }
     public void setSolveRoom(ChatRoom room){ this.solveRoom.add(room); }
 
+
+    // === 비즈니스 로직 메서드 ===//
+    public boolean comparePassword(String password){
+        return this.password.equals(password);
+    }
 }

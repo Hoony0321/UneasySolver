@@ -1,6 +1,6 @@
 package com.hunny.uneasySolver.session;
 
-import com.hunny.uneasySolver.domain.dto.MemberDTO;
+import com.hunny.uneasySolver.dto.MemberDTO;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.Cookie;

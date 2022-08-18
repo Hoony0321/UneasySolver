@@ -1,7 +1,6 @@
 package com.hunny.uneasySolver.controller;
 
 import com.hunny.uneasySolver.session.LoginSessionManager;
-import com.hunny.uneasySolver.domain.dto.MemberDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 

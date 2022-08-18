@@ -27,11 +27,11 @@
 
     <form role="form" method="post" action="/chatrooms/chatPage" th:object="${form}">
       <div class="form-group">
-        <label th:for="memberId">채팅방</label>
-        <input th:field="*{roomId}" th:value="${room.id}" th:text="${room.post.title}" disabled/>
+        <label th:for="roomId">채팅방 ID</label>
+        <input type="text" th:field="*{roomId}" th:value="${room_exac_id}" value="기본값" readonly class="form-control"/>
       </div>
       <div class="form-group">
-        <label th:for="memberId">보낼 사람 선택</label>
+        <label th:for="senderId">보낼 사람 선택</label>
         <select th:field="*{senderId}" class="form-control">
           <option th:value="${room.problemer.id}" th:text="${room.problemer.nickname}"/>
           <option th:value="${room.solver.id}" th:text="${room.solver.nickname}"/>
@@ -39,7 +39,7 @@
       </div>
       <div class="form-group">
         <label th:for="content">메세지 내용</label>
-        <textarea th:field="*{content}" placeholder="보낼 메세지를 입력해주세요."/>
+        <textarea th:field="*{content}" placeholder="보낼 메세지를 입력해주세요." class="form-control"/>
       </div>
       <button type="submit">보내기</button>
     </form>
