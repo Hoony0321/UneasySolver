@@ -65,7 +65,7 @@ const Navbar = ({ path }: INavbar) => {
 				<Flex gap={4} alignItems="center" fontSize={"1.2em"} color="primary">
 					<MenuBox />
 					<Link href="/#">새 글 쓰기</Link>
-					<Link href="/#">로그인/회원가입</Link>
+					<Link href="/login">로그인/회원가입</Link>
 				</Flex>
 			</Container>
 		</Wrapper>
