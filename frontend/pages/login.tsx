@@ -12,6 +12,8 @@ import {
 import { NextPage } from "next";
 import Link from "next/link";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import axios from "../src/utils/axios";
+import { API_LOGIN } from "../src/utils/constants/api.constants";
 import Container from "./components/common/container";
 import Wrapper from "./components/common/wrapper";
 
@@ -47,29 +49,38 @@ const LoginPage: NextPage = () => {
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
-		//필드 값 비워있는지 확인
-		const emailEmpty = email == "";
-		const passwordEmpty = password == "";
-		if (emailEmpty || passwordEmpty) {
-			if (emailEmpty) {
-				setEmailFormatError(true);
-				setEmailErrorMsg("이메일을 입력해주세요.");
+		//root 계정은 형식 무시 가능.
+		if (email != "root") {
+			//에러 발생 여부 확인
+			if (emailFormatError || pwFormatError) return;
+
+			//필드 값 비워있는지 확인
+			const emailEmpty = email == "";
+			const passwordEmpty = password == "";
+			if (emailEmpty || passwordEmpty) {
+				if (emailEmpty) {
+					setEmailFormatError(true);
+					setEmailErrorMsg("이메일을 입력해주세요.");
+				}
+				if (passwordEmpty) {
+					setPwFormatError(true);
+					setPwErrorMsg("비밀번호를 입력해주세요.");
+				}
+				return;
 			}
-			if (passwordEmpty) {
-				setPwFormatError(true);
-				setPwErrorMsg("비밀번호를 입력해주세요.");
-			}
-			return;
 		}
 
-		//! axios로 서버와 통신하기
+		axios
+			.post(API_LOGIN, { email: email, password: password })
+			.then((req) => {
+				console.log(req);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	};
 
 	//* 기타 메서드
-
-	const moveSignUpPage = () => {
-		console.log("회원가입 버튼 클릭");
-	};
 
 	return (
 		<Wrapper py={32}>

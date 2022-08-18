@@ -7,22 +7,23 @@ import {
 	Input,
 	InputGroup,
 	InputRightElement,
-	Radio,
-	RadioGroup,
 	Select,
-	Stack,
 	Text,
+	useDisclosure,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
-import React, {
-	ChangeEvent,
-	FormEvent,
-	useCallback,
-	useEffect,
-	useState,
-} from "react";
+import React, { FormEvent, useEffect, useState } from "react";
+import axios from "../src/utils/axios";
+import { IRegisterRequest } from "../src/utils/axios/@types";
+import {
+	API_CHECK_DUPLICATED_EMAIL,
+	API_CHECK_DUPLICATED_NICKNAME,
+	API_REGISTER,
+} from "../src/utils/constants/api.constants";
 import Container from "./components/common/container";
+
 import Wrapper from "./components/common/wrapper";
+import AlarmModal from "./components/common/alarmModal";
 
 const SignUpPage: NextPage = () => {
 	const [email, setEmail] = useState<string>("");
@@ -30,10 +31,10 @@ const SignUpPage: NextPage = () => {
 	const [confirmPW, setConfirmPw] = useState<string>("");
 	const [nickname, setNickName] = useState<string>("");
 	const [address, setAddress] = useState<string>("");
-	const [age, setAge] = useState<number>();
-	const [sex, setSex] = useState<string>();
 
-	const [job, setJob] = useState<string>();
+	const [age, setAge] = useState<string>("");
+	const [sex, setSex] = useState<string>("");
+	const [job, setJob] = useState<string>("");
 	const [phoneNumber, setPhoneNumber] = useState<string>("");
 
 	//* 에러 상태
@@ -55,12 +56,22 @@ const SignUpPage: NextPage = () => {
 	const [addressErrorMsg, setAddressErrorMsg] = useState<string>("");
 	const [phoneNumberErrorMsg, setPhoneNumberErrorMsg] = useState<string>("");
 
+	//* 긍정 상태
+	const [emailFormatAvailable, setEmailFormatAvailable] =
+		useState<boolean>(false);
+	const [nicknameFormatAvailable, setNickNameFormatAvailable] =
+		useState<boolean>(false);
+
+	//* 긍정 메세지
+	const [emailAvailableMsg, setEmailAvailableMsg] = useState<string>("");
+	const [nicknameAvailableMsg, setNicknameAvailableMsg] = useState<string>("");
+
 	//* 정규식
 	const regEmail =
 		/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
 	const regPW =
-		/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{13,}$/;
+		/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
 
 	const regNickname = /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,10}$/;
 
@@ -71,6 +82,7 @@ const SignUpPage: NextPage = () => {
 		if (email == "") return;
 
 		if (regEmail.test(email) == false) {
+			setEmailFormatAvailable(false);
 			setEmailFormatError(true);
 			setEmailErrorMsg("올바른 이메일 형식이 아닙니다.");
 			return;
@@ -105,6 +117,7 @@ const SignUpPage: NextPage = () => {
 		if (nickname == "") return;
 
 		if (regNickname.test(nickname) == false) {
+			setNickNameFormatAvailable(false);
 			setNickNameFormatError(true);
 			setNickNameErrorMsg(
 				"올바른 닉네임 형식이 아닙니다.\n 닉네임은 한글, 영문, 숫자만 가능하며 2-10자리입니다.",
@@ -131,6 +144,19 @@ const SignUpPage: NextPage = () => {
 	//* Handling 메서드
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
+
+		//에러 여부 확인
+		if (
+			emailFormatError ||
+			pwFormatError ||
+			confirmPwFormatError ||
+			nicknameFormatError ||
+			addressFormatError ||
+			phoneNumberFormatError
+		) {
+			window.scrollTo(0, 0);
+			return;
+		}
 
 		//필드 값 비워있는지 확인
 		const emailEmpty = email == "";
@@ -166,19 +192,61 @@ const SignUpPage: NextPage = () => {
 				setAddressFormatError(true);
 				setAddressErrorMsg("주소를 입력해주세요.");
 			}
+			window.scrollTo(0, 0);
 			return;
 		}
 
-		// ! axios post 통신 넣기
+		const request: IRegisterRequest = {
+			email: email,
+			password: password,
+			nickname: nickname,
+			address: address,
+			sex: sex,
+			age: age,
+			job: job,
+			phoneNumber: phoneNumber,
+		};
+
+		console.log(request);
+
+		axios
+			.post(API_REGISTER, request)
+			.then((res) => console.log(res))
+			.catch((error) => console.log(error));
 	};
 
 	//* 기타 메서드
+
 	const checkDuplicatedEmail = () => {
-		console.log("이메일 중복 확인");
+		axios
+			.get(API_CHECK_DUPLICATED_EMAIL, { params: { email: email } })
+			.then((res) => {
+				if (res.data) {
+					setEmailFormatError(true);
+					setEmailErrorMsg("기존에 회원가입된 이메일입니다.");
+				} else {
+					setEmailFormatError(false);
+					setEmailFormatAvailable(true);
+					setEmailAvailableMsg("사용가능한 이메일입니다.");
+				}
+			})
+			.catch((res) => console.log(res));
 	};
 
 	const checkDuplicatedNickname = () => {
-		console.log("닉네임 중복 확인");
+		axios
+			.get(API_CHECK_DUPLICATED_NICKNAME, { params: { nickname: nickname } })
+			.then((res) => {
+				if (res.data) {
+					setNickNameFormatError(true);
+					setNickNameErrorMsg("존재하는 닉네임입니다..");
+				} else {
+					setNickNameFormatError(false);
+					setNickNameFormatAvailable(true);
+					setNicknameAvailableMsg("사용가능한 닉네임입니다.");
+				}
+			})
+			.catch((res) => console.log(res));
 	};
 
 	const findAddress = () => {
@@ -216,6 +284,7 @@ const SignUpPage: NextPage = () => {
 							/>
 							<InputRightElement width="4.5em" mr={2}>
 								<Button
+									disabled={emailFormatError}
 									variant="ghost"
 									color="primary"
 									onClick={checkDuplicatedEmail}
@@ -227,6 +296,11 @@ const SignUpPage: NextPage = () => {
 
 						{emailFormatError && (
 							<FormHelperText color="red.400">{emailErrorMsg}</FormHelperText>
+						)}
+						{emailFormatAvailable && (
+							<FormHelperText color="green.500">
+								{emailAvailableMsg}
+							</FormHelperText>
 						)}
 					</FormControl>
 					<FormControl isInvalid={pwFormatError} mt={6}>
@@ -285,6 +359,7 @@ const SignUpPage: NextPage = () => {
 							/>
 							<InputRightElement width="4.5em" mr={2}>
 								<Button
+									disabled={nicknameFormatError}
 									variant="ghost"
 									color="primary"
 									onClick={checkDuplicatedNickname}
@@ -297,6 +372,11 @@ const SignUpPage: NextPage = () => {
 						{nicknameFormatError && (
 							<FormHelperText color="red.400" whiteSpace="pre-wrap">
 								{nicknameErrorMsg}
+							</FormHelperText>
+						)}
+						{nicknameFormatAvailable && (
+							<FormHelperText color="green.500" whiteSpace="pre-wrap">
+								{nicknameAvailableMsg}
 							</FormHelperText>
 						)}
 					</FormControl>
@@ -347,8 +427,8 @@ const SignUpPage: NextPage = () => {
 								fontSize="1.2em"
 								color="gray.500"
 								onChange={(e) => setSex(e.target.value)}>
-								<option value="남">남</option>
-								<option value="여">여</option>
+								<option value={"남"}>남</option>
+								<option value={"여"}>여</option>
 							</Select>
 						</InputGroup>
 					</FormControl>
@@ -361,7 +441,7 @@ const SignUpPage: NextPage = () => {
 							<Input
 								type="number"
 								value={age}
-								onChange={(e) => setAge(Number.parseInt(e.target.value))}
+								onChange={(e) => setAge(e.target.value)}
 								placeholder="(선택) 나이"
 								border="3px solid"
 								borderColor="primary"
