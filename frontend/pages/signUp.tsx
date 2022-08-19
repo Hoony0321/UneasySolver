@@ -23,9 +23,16 @@ import {
 import Container from "./components/common/container";
 
 import Wrapper from "./components/common/wrapper";
-import AlarmModal from "./components/common/alarmModal";
+import { AlarmModal, IModalState } from "./components/common/alarmModal";
 
 const SignUpPage: NextPage = () => {
+	const disclosure = useDisclosure();
+	const [modalState, setModalState] = useState<IModalState>({
+		title: "",
+		msg: "",
+	});
+	const [modalHref, setModalHref] = useState<string | null>(null);
+
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const [confirmPW, setConfirmPw] = useState<string>("");
@@ -141,6 +148,12 @@ const SignUpPage: NextPage = () => {
 		setPhoneNumberFormatError(false);
 	}, [phoneNumber]);
 
+	useEffect(() => {
+		if (addressFormatError && address != "") {
+			setAddressFormatError(false);
+		}
+	}, [address]);
+
 	//* Handling 메서드
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
@@ -207,12 +220,28 @@ const SignUpPage: NextPage = () => {
 			phoneNumber: phoneNumber,
 		};
 
-		console.log(request);
-
 		axios
 			.post(API_REGISTER, request)
-			.then((res) => console.log(res))
-			.catch((error) => console.log(error));
+			.then((res) => {
+				if (res.status == 200) {
+					setModalHref("/login");
+					setModalState((prev) => ({
+						...prev,
+						title: "회원가입",
+						msg: "회원가입에 성공하셨습니다. 로그인해주세요.",
+					}));
+				}
+				disclosure.onOpen();
+			})
+			.catch((error) => {
+				setModalHref(null);
+				setModalState((prev) => ({
+					...prev,
+					title: "회원가입 실패",
+					msg: "회원가입에 실패하셨습니다. 다시 한번 확인해주세요.",
+				}));
+				disclosure.onOpen();
+			});
 	};
 
 	//* 기타 메서드
@@ -510,6 +539,12 @@ const SignUpPage: NextPage = () => {
 						회원가입
 					</Button>
 				</form>
+
+				<AlarmModal
+					disclosure={disclosure}
+					state={modalState}
+					href={modalHref}
+				/>
 			</Container>
 		</Wrapper>
 	);

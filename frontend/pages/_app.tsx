@@ -4,14 +4,17 @@ import { ChakraProvider } from "@chakra-ui/react";
 import Layout from "./layout";
 import theme from "../src/styles/theme";
 import "../src/styles/globals.css";
+import { RecoilRoot } from "recoil";
 
 function Uneasy({ Component, pageProps, router }: AppProps) {
 	return (
-		<ChakraProvider theme={theme}>
-			<Layout router={router}>
-				<Component {...pageProps} key={router.route} />
-			</Layout>
-		</ChakraProvider>
+		<RecoilRoot>
+			<ChakraProvider theme={theme}>
+				<Layout router={router}>
+					<Component {...pageProps} key={router.route} />
+				</Layout>
+			</ChakraProvider>
+		</RecoilRoot>
 	);
 }
 

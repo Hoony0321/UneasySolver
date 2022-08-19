@@ -8,38 +8,40 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Text,
-	useDisclosure,
+	UseDisclosureProps,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
 
-const AlarmModal = ({
-	isOpen,
-	onOpen,
-	onClose,
-	title,
-	msg,
-}: {
-	isOpen: boolean;
-	onOpen: () => void;
-	onClose: () => void;
+export interface IModalState {
 	title: string;
 	msg: string;
+}
+
+export const AlarmModal = ({
+	disclosure,
+	state,
+	href,
+}: {
+	disclosure: UseDisclosureProps;
+	state: IModalState;
+	href: string | null;
 }) => {
 	return (
-		<Modal isOpen={isOpen} onClose={onClose}>
+		<Modal isOpen={disclosure.isOpen!} onClose={() => disclosure.onOpen!()}>
 			<ModalOverlay />
 			<ModalContent>
-				<ModalHeader>{title}</ModalHeader>
+				<ModalHeader>{state.title}</ModalHeader>
 				<ModalCloseButton />
 				<ModalBody>
-					<Text>{msg}</Text>
+					<Text>{state.msg}</Text>
 				</ModalBody>
+
 				<ModalFooter>
-					<Button onClick={onClose}> 확인</Button>
+					{href && <Link href={href}>이동</Link>}
+					{!href && <Button onClick={() => disclosure.onClose!()}>닫기</Button>}
 				</ModalFooter>
 			</ModalContent>
 		</Modal>
 	);
 };
-
-export default AlarmModal;

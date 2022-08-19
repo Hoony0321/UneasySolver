@@ -8,18 +8,41 @@ import {
 	Input,
 	Text,
 	useBoolean,
+	useDisclosure,
 } from "@chakra-ui/react";
+import { AxiosError } from "axios";
+import { Http2ServerResponse } from "http2";
+import jwtDecode from "jwt-decode";
 import { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import {
+	authenticationAtom,
+	IAuthenticationAtom,
+} from "../src/store/authentication/authentication.state";
 import axios from "../src/utils/axios";
+import { ILoginResponse, IResponse } from "../src/utils/axios/@types";
 import { API_LOGIN } from "../src/utils/constants/api.constants";
+import { jwtUtils } from "../src/utils/jwtUtils";
+import { AlarmModal, IModalState } from "./components/common/alarmModal";
 import Container from "./components/common/container";
 import Wrapper from "./components/common/wrapper";
 
 const LoginPage: NextPage = () => {
+	const router = useRouter();
+	const [authState, setAuthState] = useRecoilState(authenticationAtom);
+	const disclosure = useDisclosure();
+
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
+
+	//* modal 상태
+	const [modalState, setModalState] = useState<IModalState>({
+		title: "",
+		msg: "",
+	});
 
 	//* 에러 상태
 	const [emailFormatError, setEmailFormatError] = useState<boolean>(false);
@@ -72,11 +95,32 @@ const LoginPage: NextPage = () => {
 
 		axios
 			.post(API_LOGIN, { email: email, password: password })
-			.then((req) => {
-				console.log(req);
+			.then(async (response) => {
+				const token = (response.data as ILoginResponse).jwt;
+				const content = jwtUtils.getContentFromToken(token);
+
+				localStorage.setItem("token", (response.data as ILoginResponse).jwt);
+
+				setAuthState({
+					token: token,
+					id: content.id,
+					email: content.email,
+					nickname: content.nickname,
+				});
+
+				await router.push("/");
 			})
-			.catch((error) => {
+			.catch((error: AxiosError) => {
 				console.log(error);
+
+				const data: IResponse = error.response?.data as IResponse;
+				console.log(data.message);
+				setModalState((prev) => ({
+					...prev,
+					title: modalState.title,
+					msg: modalState.msg,
+				}));
+				disclosure.onOpen();
 			});
 	};
 
@@ -169,6 +213,8 @@ const LoginPage: NextPage = () => {
 						</Button>
 					</Link>
 				</form>
+
+				<AlarmModal state={modalState} disclosure={disclosure} href={null} />
 			</Container>
 		</Wrapper>
 	);
