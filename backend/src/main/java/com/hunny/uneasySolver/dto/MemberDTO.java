@@ -16,6 +16,12 @@ public class MemberDTO {
 
 
     public MemberDTO(){}
+
+    public MemberDTO(Member member){
+        this.id = member.getId();
+        this.email = member.getEmail();
+        this.nickname = member.getNickname();
+    }
     public MemberDTO(Long id, String email, String nickname) {
         this.id = id;
         this.email = email;

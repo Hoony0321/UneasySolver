@@ -22,7 +22,7 @@ class LoginSessionManagerTest {
     public void 세션테스트() throws Exception {
 
         Member member = Member.createDummyMember(1);
-        MemberDTO memberInfo = MemberDTO.createMemberCookie(member);
+        MemberDTO memberInfo = new MemberDTO(member);
 
         //response에 쿠기 담기
         MockHttpServletResponse response = new MockHttpServletResponse();

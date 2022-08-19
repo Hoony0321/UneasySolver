@@ -1,7 +1,9 @@
 package com.hunny.uneasySolver.service;
 
 import com.hunny.uneasySolver.domain.Member;
+import com.hunny.uneasySolver.dto.MemberLoginRequest;
 import com.hunny.uneasySolver.repository.MemberRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,12 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 class MemberServiceTest {
 
     @Autowired private MemberRepository memberRepository;
+    @Autowired private MemberService memberService;
 
     @Test
     public void 회원가입() throws Exception{
@@ -65,5 +69,31 @@ class MemberServiceTest {
          //then
          assertThat(members.size()).isEqualTo(4);
 
+    }
+
+    @Test
+    public void 회원_로그인_성공() throws Exception {
+        //given
+        MemberLoginRequest request = new MemberLoginRequest("root", "root");
+
+        //when
+        Member member = memberService.login(request);
+
+        //then
+        assertThat(member.getNickname()).isEqualTo("root");
+    }
+
+    @Test
+    public void 회원_로그인_실패() throws Exception {
+        //given
+        MemberLoginRequest request = new MemberLoginRequest("root", "root123");
+
+        //when
+        Exception exception = assertThrows(Exception.class, () -> {
+            memberService.login(request);
+        });
+
+        //then
+        assertThat(exception.getMessage()).isEqualTo("로그인에 실패하셨습니다.");
     }
 }

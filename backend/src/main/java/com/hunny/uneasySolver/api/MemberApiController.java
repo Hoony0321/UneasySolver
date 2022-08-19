@@ -1,13 +1,12 @@
 package com.hunny.uneasySolver.api;
 
+import com.hunny.uneasySolver.dto.*;
 import com.hunny.uneasySolver.security.JwtUtils;
 import com.hunny.uneasySolver.domain.Member;
-import com.hunny.uneasySolver.dto.MemberLoginRequest;
-import com.hunny.uneasySolver.dto.MemberLoginResponse;
-import com.hunny.uneasySolver.dto.MemberRegisterRequest;
 import com.hunny.uneasySolver.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,15 +30,12 @@ public class MemberApiController {
     }
 
     @PostMapping("/api/members/login")
-    public String login(@RequestBody @Valid MemberLoginRequest request){
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody @Valid MemberLoginRequest request){
         Member member = memberService.login(request);
+        System.out.println(member.getNickname());
+        String token = jwtUtils.generateToken(new MemberDTO(member));
 
-        MemberLoginResponse response = new MemberLoginResponse(member.getId());
-
-        String token = jwtUtils.generateToken(member.getId());
-
-//        return response;
-        return token;
+        return ResponseEntity.ok(new AuthenticationResponse(token));
     }
 
     @PostMapping("/api/members/register")

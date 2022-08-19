@@ -46,7 +46,7 @@ public class MemberService {
 
     public Member login(MemberLoginRequest request){
         Optional<Member> result = memberRepository.findByEmail(request.getEmail());
-        if(result.isEmpty()){throw new LoginException("로그인에 실패하셨습니다.");}
+        if(result.isEmpty()){throw new LoginException("존재하지 않는 회원 이메일입니다.");}
 
         Member member = result.get();
         if(!member.comparePassword(request.getPassword())){

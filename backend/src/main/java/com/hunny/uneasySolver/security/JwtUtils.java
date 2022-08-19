@@ -1,5 +1,6 @@
 package com.hunny.uneasySolver.security;
 
+import com.hunny.uneasySolver.domain.Member;
 import com.hunny.uneasySolver.dto.MemberDTO;
 import com.hunny.uneasySolver.service.MemberService;
 import io.jsonwebtoken.Claims;
@@ -30,7 +31,7 @@ public class JwtUtils {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(Long id){
+    public String generateToken(MemberDTO member){
 
         //Header 부분 설정
         Map<String, Object> headers = new HashMap<>();
@@ -39,7 +40,9 @@ public class JwtUtils {
 
         //payload 설정 ( token에 담을 값 )
         Map<String, Object> payloads = new HashMap<>();
-        payloads.put("id", id);
+        payloads.put("id", member.getId());
+        payloads.put("email", member.getEmail());
+        payloads.put("nickname", member.getNickname());
 
         //현재 시간 가져오기
         Date now = new Date();
@@ -55,25 +58,20 @@ public class JwtUtils {
         return jwtToken;
     }
 
-    public String getMemberIdFromJWT(String token){
+    public Claims getContentFromJWT(String token){
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token).getBody();
-
-        return claims.getSubject();
+        return claims;
     }
 
     public Boolean validationToken(String token){
         try {
-            Claims claims = Jwts.parserBuilder()
+            Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token).getBody();
-
-
-            System.out.println(claims);
-
             return true;
         }
         catch (ExpiredJwtException e){
