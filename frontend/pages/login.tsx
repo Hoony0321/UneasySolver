@@ -83,7 +83,8 @@ const LoginPage: NextPage = () => {
 			if (emailEmpty || passwordEmpty) {
 				if (emailEmpty) {
 					setEmailFormatError(true);
-					setEmailErrorMsg("이메일을 입력해주세요.");
+					setEmailErro;
+					rMsg("이메일을 입력해주세요.");
 				}
 				if (passwordEmpty) {
 					setPwFormatError(true);
@@ -111,14 +112,11 @@ const LoginPage: NextPage = () => {
 				await router.push("/");
 			})
 			.catch((error: AxiosError) => {
-				console.log(error);
-
 				const data: IResponse = error.response?.data as IResponse;
-				console.log(data.message);
 				setModalState((prev) => ({
 					...prev,
-					title: modalState.title,
-					msg: modalState.msg,
+					title: error.status!,
+					msg: error.message.toString(),
 				}));
 				disclosure.onOpen();
 			});

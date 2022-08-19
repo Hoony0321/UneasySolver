@@ -29,14 +29,22 @@ interface INavbar {
 
 const Navbar = ({ path }: INavbar) => {
 	const router = useRouter();
-	const [isLogin, setIsLogin] = useState<boolean>(false);
+	const [isLogin, setIsLogin] = useState<boolean>();
 	const [authState, setAuthState] = useRecoilState(authenticationAtom);
 
 	const onClickLogOut = () => {
-		console.log(authState.token);
 		localStorage.clear();
 		setAuthState((prev) => ({ ...prev, token: "" }));
 	};
+
+	const onClickMypage = async () => {
+		console.log("click btn");
+		await router.push("/members/mypage");
+	};
+
+	useEffect(() => {
+		console.log(authState);
+	}, []);
 
 	useEffect(() => {
 		setIsLogin(authState.token != "");
@@ -61,6 +69,20 @@ const Navbar = ({ path }: INavbar) => {
 						<MenuItem>Menu 1</MenuItem>
 						<MenuItem>Menu 2</MenuItem>
 						{isLogin && <MenuItem onClick={onClickLogOut}>로그아웃</MenuItem>}
+						{isLogin && (
+							<MenuItem
+								onClick={() => {
+									onClickMypage()
+										.then((resolved) => {
+											console.log(resolved);
+										})
+										.catch((error) => {
+											console.log(error);
+										});
+								}}>
+								마이페이지
+							</MenuItem>
+						)}
 					</MenuGroup>
 				</MenuList>
 			</Menu>
@@ -84,7 +106,7 @@ const Navbar = ({ path }: INavbar) => {
 				<Logo />
 				{isLogin && (
 					<Flex alignItems="center" gap={8} fontSize={"1.2em"} color="primary">
-						<Link href="/#">새 글 쓰기</Link>
+						<Link href="/members/post/createPost">새 글 쓰기</Link>
 						<Flex
 							border="2px solid"
 							borderColor="primary"
