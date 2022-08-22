@@ -7,21 +7,16 @@ import {
 	FormLabel,
 	Input,
 	Text,
-	useBoolean,
 	useDisclosure,
 } from "@chakra-ui/react";
 import { AxiosError } from "axios";
-import { Http2ServerResponse } from "http2";
-import jwtDecode from "jwt-decode";
+
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import {
-	authenticationAtom,
-	IAuthenticationAtom,
-} from "../src/store/authentication/authentication.state";
+import { authenticationAtom } from "../src/store/authentication/authentication.state";
 import axios from "../src/utils/axios";
 import { ILoginResponse, IResponse } from "../src/utils/axios/@types";
 import { API_LOGIN } from "../src/utils/constants/api.constants";
@@ -83,8 +78,7 @@ const LoginPage: NextPage = () => {
 			if (emailEmpty || passwordEmpty) {
 				if (emailEmpty) {
 					setEmailFormatError(true);
-					setEmailErro;
-					rMsg("이메일을 입력해주세요.");
+					setEmailErrorMsg("이메일을 입력해주세요.");
 				}
 				if (passwordEmpty) {
 					setPwFormatError(true);

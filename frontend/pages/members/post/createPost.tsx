@@ -13,12 +13,31 @@ import {
 	Textarea,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { IJob, useJobAxios } from "../../../src/utils/axios/jobAxios";
+import { useTargetAxios, ITarget } from "../../../src/utils/axios/targetAxios";
 import Container from "../../components/common/container";
 import Wrapper from "../../components/common/wrapper";
 
 const CreatePostPage: NextPage = () => {
 	const [target, setTarget] = useState<string>("");
+
+	// * Axios Target / Job
+	const { getTargetList } = useTargetAxios();
+
+	const [targetList, setTargetList] = useState<ITarget[]>([]);
+
+	useEffect(() => {
+		getTargetList()
+			.then((res) => {
+				if (res) {
+					setTargetList(res as ITarget[]);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
 	return (
 		<Wrapper py={24}>
@@ -45,17 +64,20 @@ const CreatePostPage: NextPage = () => {
 							</Flex>
 							<InputGroup size="lg" mt={4}>
 								<Select
-									placeholder="(필수) 불편 대상"
+									required
 									border="3px solid"
 									borderColor="primary"
 									fontSize="1.2em"
-									color="gray.500"
+									color="black"
 									onChange={(e) => setTarget(e.target.value)}>
-									<option value="식품">식품</option>
-									<option value="패션">패션</option>
-									<option value="생활">생활</option>
-									<option value="여가">여가</option>
-									<option value="서비스">서비스</option>
+									<option value="null" selected hidden>
+										(필수) 불편 대상
+									</option>
+									{targetList.map((target) => (
+										<option key={target.id} value={target.id}>
+											{target.name}
+										</option>
+									))}
 								</Select>
 							</InputGroup>
 						</FormControl>
@@ -108,10 +130,11 @@ const CreatePostPage: NextPage = () => {
 							</Flex>
 							<InputGroup size="lg" mt={4}>
 								<Textarea
-									placeholder="불편지수"
+									placeholder="불편 내용"
 									border="3px solid"
 									borderColor="primary"
 									fontSize="1.2em"
+									h={300}
 								/>
 							</InputGroup>
 						</FormControl>
@@ -227,7 +250,7 @@ const CreatePostPage: NextPage = () => {
 							<Text fontWeight="bold" fontSize="1.5em">
 								총 보상
 							</Text>
-							<Text fontWeight="bold" fontSize="1.8em" color="primary">
+							<Text fontWeight="bold" fontSize="2em" color="primary">
 								0 Point
 							</Text>
 						</Flex>

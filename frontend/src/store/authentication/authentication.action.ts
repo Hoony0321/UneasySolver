@@ -1,56 +1,71 @@
-// import axios from "@utils/axios";
-// import { API_LOGIN } from "@utils/constants/api.constants";
-// import { AxiosResponse } from "axios";
-// import { useRecoilState } from "recoil";
-// import { ILoginResponseProps } from "./authentication.props";
-// import { authenticationAtom } from "./authentication.state";
+import { AxiosError } from "axios";
+import { useRecoilState } from "recoil";
+import axios from "../../utils/axios";
+import { IJwtContent, ILoginResponse } from "../../utils/axios/@types";
+import { API_LOGIN } from "../../utils/constants/api.constants";
+import { jwtUtils } from "../../utils/jwtUtils";
+import { authenticationAtom } from "./authentication.state";
 
-// export const useAuthenticationActions = () => {
-// 	const [authState, setAuthState] = useRecoilState(authenticationAtom);
+export const useAuthenticationActions = () => {
+	const [authState, setAuthState] = useRecoilState(authenticationAtom);
 
-// 	const login = async ({
-// 		email,
-// 		password,
-// 	}: {
-// 		email: string;
-// 		password: string;
-// 	}) => {
-// 		// axios
-// 		// .post(API_LOGIN, { email: email, password: password })
-// 		// .then(async (response) => {
-// 		//     localStorage.setItem("token", (response.data as ILoginResponse).jwt);
-// 		//     await router.push("/");
-// 		//     location.reload();
-// 		// })
-// 		// .catch((error: AxiosError) => {
-// 		//     console.log(error);
+	const login = async ({
+		email,
+		password,
+	}: {
+		email: string;
+		password: string;
+	}) => {
+		try {
+			await axios
+				.post<ILoginResponse>(API_LOGIN, { email: email, password: password })
+				.then((response) => {
+					const token = response.data.jwt; //토큰 가져오기
+					localStorage.setItem("token", token); //토큰 로컬 스토리지 저장
 
-// 		//     const data: IResponse = error.response?.data as IResponse;
-// 		//     console.log(data.message);
-// 		//     onOpen();
-// 		// });
+					const userInfo = jwtUtils.getContentFromToken(token); //토큰에서 정보 추출
+					setAuthState({
+						//유저 정보 전역 변수에 저장
+						token: token,
+						id: userInfo.id,
+						email: userInfo.email,
+						nickname: userInfo.nickname,
+					});
 
-// 		try {
-// 			const response: AxiosResponse<ILoginResponseProps> = await axios.post(
-// 				API_LOGIN,
-// 				{ email, password },
-// 			);
-// 			if (response.status === 200) {
-// 				// TODO 로그인 완료 시 처리
+					return true;
+				});
+		} catch (error: unknown) {
+			return false;
+		}
+	};
 
-// 				setAuthState((old) => ({
-// 					...old,
-// 					isAuthenticated: true,
-// 				}));
+	const logout = () => {
+		try {
+			localStorage.removeItem("token");
+			return true;
+		} catch (error: unknown) {
+			return false;
+		}
+	};
 
-// 				return response.data;
-// 			}
-// 		} catch (error: unknown) {
-// 			if (error instanceof Error) throw new Error(error.message);
-// 		}
-// 	};
+	const refreshInfo = () => {
+		try {
+			const token = localStorage.getItem("token");
+			const tokenInfo = jwtUtils.getContentFromToken(token!);
+			setAuthState(() => ({
+				token: token!,
+				id: tokenInfo.id,
+				email: tokenInfo.email,
+				nickname: tokenInfo.nickname,
+			}));
+		} catch (error: unknown) {
+			console.log("에러 발생");
+		}
+	};
 
-// 	return {
-// 		login,
-// 	};
-// };
+	return {
+		login,
+		logout,
+		refreshInfo,
+	};
+};

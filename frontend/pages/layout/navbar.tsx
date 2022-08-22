@@ -22,17 +22,20 @@ import { jwtUtils } from "../../src/utils/jwtUtils";
 import { IJwtContent } from "../../src/utils/axios/@types";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../../src/store/authentication/authentication.state";
+import { useAuthenticationActions } from "../../src/store/authentication/authentication.action";
 
 interface INavbar {
 	path: string;
 }
 
 const Navbar = ({ path }: INavbar) => {
+	const { refreshInfo } = useAuthenticationActions();
 	const router = useRouter();
 	const [isLogin, setIsLogin] = useState<boolean>();
 	const [authState, setAuthState] = useRecoilState(authenticationAtom);
 
 	const onClickLogOut = () => {
+		console.log("실행");
 		localStorage.clear();
 		setAuthState((prev) => ({ ...prev, token: "" }));
 	};
@@ -43,10 +46,13 @@ const Navbar = ({ path }: INavbar) => {
 	};
 
 	useEffect(() => {
-		console.log(authState);
+		console.log("첫 렌더링 실행");
+		refreshInfo();
 	}, []);
 
 	useEffect(() => {
+		console.log("authState 변경됨.");
+		console.log(authState.token);
 		setIsLogin(authState.token != "");
 	}, [authState]);
 
@@ -124,7 +130,7 @@ const Navbar = ({ path }: INavbar) => {
 
 				{!isLogin && (
 					<Flex gap={4} alignItems="center" fontSize={"1.2em"} color="primary">
-						<MenuBox isLogin={isLogin} />
+						<MenuBox isLogin={isLogin!} />
 						<Link href="/login">로그인/회원가입</Link>
 					</Flex>
 				)}

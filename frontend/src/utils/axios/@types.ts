@@ -24,8 +24,7 @@ export interface ILoginResponse {
 }
 
 export interface IJwtContent {
-	email: string;
-	exp: number;
 	id: number;
+	email: string;
 	nickname: string;
 }
