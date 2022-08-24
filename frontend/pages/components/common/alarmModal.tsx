@@ -16,17 +16,18 @@ import React from "react";
 export interface IModalState {
 	title: string;
 	msg: string;
+	href: string | null;
 }
 
 export const AlarmModal = ({
-	disclosure,
 	state,
-	href,
+	disclosure,
 }: {
-	disclosure: UseDisclosureProps;
 	state: IModalState;
-	href: string | null;
+	disclosure: UseDisclosureProps;
 }) => {
+	const { title, msg, href } = state;
+
 	return (
 		<Modal isOpen={disclosure.isOpen!} onClose={() => disclosure.onOpen!()}>
 			<ModalOverlay />

@@ -13,3 +13,4 @@ export const API_REGISTER = "/api/members/register";
 //* Axios
 export const API_TARGET = "/api/targets";
 export const API_JOB = "/api/jobs";
+export const API_POST_CREATE = "/api/auth/posts/create";

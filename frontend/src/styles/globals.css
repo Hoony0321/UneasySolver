@@ -33,3 +33,7 @@ a {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+
+.uneasy_idx_active{
+  color: red !important;
+}

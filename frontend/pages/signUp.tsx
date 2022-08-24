@@ -26,12 +26,13 @@ import Wrapper from "./components/common/wrapper";
 import { AlarmModal, IModalState } from "./components/common/alarmModal";
 
 const SignUpPage: NextPage = () => {
-	const disclosure = useDisclosure();
 	const [modalState, setModalState] = useState<IModalState>({
 		title: "",
 		msg: "",
+		href: null,
 	});
-	const [modalHref, setModalHref] = useState<string | null>(null);
+
+	const disclosure = useDisclosure();
 
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
@@ -224,21 +225,21 @@ const SignUpPage: NextPage = () => {
 			.post(API_REGISTER, request)
 			.then((res) => {
 				if (res.status == 200) {
-					setModalHref("/login");
 					setModalState((prev) => ({
 						...prev,
 						title: "회원가입",
 						msg: "회원가입에 성공하셨습니다. 로그인해주세요.",
+						href: "/login",
 					}));
 				}
 				disclosure.onOpen();
 			})
 			.catch((error) => {
-				setModalHref(null);
 				setModalState((prev) => ({
 					...prev,
 					title: "회원가입 실패",
 					msg: "회원가입에 실패하셨습니다. 다시 한번 확인해주세요.",
+					href: null,
 				}));
 				disclosure.onOpen();
 			});
@@ -540,11 +541,7 @@ const SignUpPage: NextPage = () => {
 					</Button>
 				</form>
 
-				<AlarmModal
-					disclosure={disclosure}
-					state={modalState}
-					href={modalHref}
-				/>
+				<AlarmModal state={modalState} disclosure={disclosure} />
 			</Container>
 		</Wrapper>
 	);

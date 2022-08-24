@@ -28,15 +28,16 @@ import Wrapper from "./components/common/wrapper";
 const LoginPage: NextPage = () => {
 	const router = useRouter();
 	const [authState, setAuthState] = useRecoilState(authenticationAtom);
-	const disclosure = useDisclosure();
 
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 
 	//* modal 상태
+	const disclosure = useDisclosure();
 	const [modalState, setModalState] = useState<IModalState>({
 		title: "",
 		msg: "",
+		href: null,
 	});
 
 	//* 에러 상태
@@ -106,13 +107,13 @@ const LoginPage: NextPage = () => {
 				await router.push("/");
 			})
 			.catch((error: AxiosError) => {
+				disclosure.onOpen();
 				const data: IResponse = error.response?.data as IResponse;
 				setModalState((prev) => ({
 					...prev,
 					title: error.status!,
 					msg: error.message.toString(),
 				}));
-				disclosure.onOpen();
 			});
 	};
 
@@ -206,7 +207,7 @@ const LoginPage: NextPage = () => {
 					</Link>
 				</form>
 
-				<AlarmModal state={modalState} disclosure={disclosure} href={null} />
+				<AlarmModal state={modalState} disclosure={disclosure} />
 			</Container>
 		</Wrapper>
 	);

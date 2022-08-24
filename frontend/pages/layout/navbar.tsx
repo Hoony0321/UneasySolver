@@ -38,6 +38,7 @@ const Navbar = ({ path }: INavbar) => {
 		console.log("실행");
 		localStorage.clear();
 		setAuthState((prev) => ({ ...prev, token: "" }));
+		location.replace("/");
 	};
 
 	const onClickMypage = async () => {
