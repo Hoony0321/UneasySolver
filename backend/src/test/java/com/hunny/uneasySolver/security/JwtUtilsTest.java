@@ -5,7 +5,6 @@ import com.hunny.uneasySolver.dto.MemberDTO;
 import com.hunny.uneasySolver.dto.MemberLoginRequest;
 import com.hunny.uneasySolver.service.MemberService;
 import io.jsonwebtoken.Claims;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -30,7 +28,7 @@ class JwtUtilsTest {
 
         //when
         String token = jwtUtils.generateToken(new MemberDTO(member)); //토큰 생성
-        Claims content = jwtUtils.getContentFromJWT(token);
+        Claims content = jwtUtils.parseJwt(token);
 
         //then
         assertThat(content.get("id")).isEqualTo(2);

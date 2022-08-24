@@ -2,6 +2,7 @@ package com.hunny.uneasySolver.domain;
 
 import com.hunny.uneasySolver.dto.MemberRegisterRequest;
 import com.hunny.uneasySolver.form.MemberCreateForm;
+import com.hunny.uneasySolver.security.Authority;
 import lombok.Getter;
 
 import javax.persistence.Column;
@@ -26,6 +27,9 @@ public class Member {
 
     @NotNull
     private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
     @NotNull
     @Column(unique = true)
@@ -85,6 +89,7 @@ public class Member {
         member.sex = request.getSex();
         member.phoneNumber = request.getPhoneNumber();
         member.point = 0;
+        member.authority = Authority.ROLE_USER;
 
         return member;
     }

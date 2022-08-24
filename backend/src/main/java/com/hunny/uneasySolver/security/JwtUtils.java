@@ -1,8 +1,6 @@
 package com.hunny.uneasySolver.security;
 
-import com.hunny.uneasySolver.domain.Member;
 import com.hunny.uneasySolver.dto.MemberDTO;
-import com.hunny.uneasySolver.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -10,13 +8,21 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.hunny.uneasySolver.security.Authority.ROLE_ADMIN;
+import static com.hunny.uneasySolver.security.Authority.ROLE_USER;
 
 @Component
 @RequiredArgsConstructor
@@ -43,6 +49,7 @@ public class JwtUtils {
         payloads.put("id", member.getId());
         payloads.put("email", member.getEmail());
         payloads.put("nickname", member.getNickname());
+        payloads.put("auth", member.getAuthority());
 
         //현재 시간 가져오기
         Date now = new Date();
@@ -58,7 +65,7 @@ public class JwtUtils {
         return jwtToken;
     }
 
-    public Claims getContentFromJWT(String token){
+    public Claims parseJwt(String token){
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
@@ -80,5 +87,20 @@ public class JwtUtils {
         catch(Exception e){
             throw e;
         }
+    }
+
+    public Authentication getAuthentication(String token){
+        //토큰 복호화
+        Claims claims = parseJwt(token);
+
+        // 클레임에서 권한 정보 가져오기
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get("auth").toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        UserDetails userDetails = new User(claims.getSubject(), "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 }
