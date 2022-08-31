@@ -3,7 +3,10 @@ package com.hunny.uneasySolver.domain;
 import com.hunny.uneasySolver.dto.MemberRegisterRequest;
 import com.hunny.uneasySolver.form.MemberCreateForm;
 import com.hunny.uneasySolver.security.Authority;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +18,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @GeneratedValue @Id

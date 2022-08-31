@@ -1,5 +1,6 @@
 package com.hunny.uneasySolver.security;
 
+
 import com.hunny.uneasySolver.dto.MemberDTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -8,6 +9,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,18 +23,19 @@ import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.hunny.uneasySolver.security.Authority.ROLE_ADMIN;
-import static com.hunny.uneasySolver.security.Authority.ROLE_USER;
-
 @Component
 @RequiredArgsConstructor
 public class JwtUtils {
-    private final String secretKey = "UneasySecretKey1111asdiojofvaekjdopiavjkajcoidcjoiacjeoiajoijvjavsdjovjdiaosjekvasjl"; // TODO 추후에 따로 secret 파일 만들어서 숨기기.
+
+    @Value("${JWT-SECRET-KEY}")
+    private String secretKey;
+
     private Key key;
     private long tokenValidTime = 30 * 60 * 1000L; //유효시간 30
 
     @PostConstruct
     protected void init() {
+        System.out.println(secretKey);
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -23,27 +22,25 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    @Transactional
     public Long join(Member member){
         // TODO 이메일 중복 검사
         // TODO 닉네임 중복 검사
         return memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
     public Optional<Member> findById(Long id){
         return memberRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<Member> findAll(){
         return memberRepository.findAll();
     }
 
-    public Member login(MemberLoginForm form) {
-        Optional<Member> findMember = memberRepository.findByEmail(form.getEmail());
-        if(findMember.isEmpty()){throw new LoginException("로그인에 실패하셨습니다.");}
 
-        return findMember.get();
-    }
-
+    @Transactional(readOnly = true)
     public Member login(MemberLoginRequest request){
         Optional<Member> result = memberRepository.findByEmail(request.getEmail());
         if(result.isEmpty()){throw new LoginException("존재하지 않는 회원 이메일입니다.");}
@@ -57,11 +54,14 @@ public class MemberService {
         return member;
     }
 
+
+    @Transactional(readOnly = true)
     public void join(MemberRegisterRequest request) {
         Member member = Member.registerMember(request);
         memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
     public boolean checkEmailDuplicated(String email){
         boolean result = false;
         for (Member member : memberRepository.findAll()) {
@@ -73,6 +73,7 @@ public class MemberService {
         return result;
     }
 
+    @Transactional(readOnly = true)
     public boolean checkNickNameDuplicated(String nickname){
         boolean result = false;
         for (Member member : memberRepository.findAll()) {

@@ -75,6 +75,11 @@ yarn-error.log*
 # vercel
 .vercel
 
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+### SECRET INFO ###
+resources/application-SECRET.properties

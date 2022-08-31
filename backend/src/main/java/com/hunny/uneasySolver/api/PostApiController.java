@@ -1,6 +1,8 @@
 package com.hunny.uneasySolver.api;
 
+import com.hunny.uneasySolver.domain.Post;
 import com.hunny.uneasySolver.dto.PostCreateRequest;
+import com.hunny.uneasySolver.dto.PostListResponse;
 import com.hunny.uneasySolver.form.PostCreateForm;
 import com.hunny.uneasySolver.repository.TargetRepository;
 import com.hunny.uneasySolver.security.JwtUtils;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -28,9 +32,18 @@ public class PostApiController {
     private final JwtUtils jwtUtils;
 
     @GetMapping("/api/posts")
-    public String postList(Model model){
-        model.addAttribute("posts", postService.findAll());
-        return "posts/listPage";
+    public List<PostListResponse> postList(Model model){
+        List<PostListResponse> result = new ArrayList<PostListResponse>();
+
+        List<Post> posts = postService.findAll();
+
+        for(Post post : posts){
+            PostListResponse postInfo = new PostListResponse(post);
+
+            result.add(postInfo);
+        }
+
+        return result;
     }
 
 
@@ -42,4 +55,6 @@ public class PostApiController {
         }
         return "redirect:/";
     }
+
+
 }
