@@ -16,12 +16,13 @@ import { NextPage } from "next";
 import React, { FormEvent, useEffect, useState } from "react";
 import { RecoilValueReadOnly, useRecoilState, useRecoilValue } from "recoil";
 import { authenticationAtom } from "../../../src/store/authentication/authentication.state";
+import { usePostAxios } from "../../../src/utils/axios/postAxios";
+
+import { useTargetAxios } from "../../../src/utils/axios/targetAxios";
 import {
 	IPostCreateRequest,
-	usePostAxios,
-} from "../../../src/utils/axios/createPostAxios";
-
-import { useTargetAxios, ITarget } from "../../../src/utils/axios/targetAxios";
+	ITarget,
+} from "../../../src/utils/constants/@types";
 import { AlarmModal, IModalState } from "../../components/common/alarmModal";
 import Container from "../../components/common/container";
 import Wrapper from "../../components/common/wrapper";
@@ -144,6 +145,8 @@ const CreatePostPage: NextPage = () => {
 			imgFile: imgFile,
 			point: reward,
 		} as IPostCreateRequest);
+
+		window.location.replace("/");
 	};
 
 	return (

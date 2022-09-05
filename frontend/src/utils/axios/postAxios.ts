@@ -1,19 +1,6 @@
-import { throws } from "assert";
 import axios from ".";
-import { API_POST_CREATE } from "../constants/api.constants";
-
-export interface IPostState {
-	target: number;
-	uneasyIdx: number;
-	content: string;
-	address: string | null;
-	imgFile: string | null;
-}
-
-export interface IPostCreateRequest extends IPostState {
-	id: number;
-	point: number;
-}
+import { IPost, IPostCreateRequest } from "../constants/@types";
+import { API_POST_CREATE, API_POST_LIST } from "../constants/api.constants";
 
 export const usePostAxios = () => {
 	const createPost = (data: IPostCreateRequest) => {
@@ -33,5 +20,17 @@ export const usePostAxios = () => {
 		}
 	};
 
-	return { createPost };
+	const getPostList = async () => {
+		try {
+			let result: IPost[] = [];
+			await axios.get<IPost[]>(API_POST_LIST).then((res) => {
+				result = res.data;
+			});
+			return result;
+		} catch (error: unknown) {
+			return "Post를 가져오는 중에 에러가 발생했습니다.";
+		}
+	};
+
+	return { getPostList, createPost };
 };

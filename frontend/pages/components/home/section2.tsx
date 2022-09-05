@@ -6,7 +6,10 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import { type } from "os";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "../../../src/utils/axios";
+import { useTargetAxios } from "../../../src/utils/axios/targetAxios";
+import { ITarget } from "../../../src/utils/constants/@types";
 import Container from "../common/container";
 import Wrapper from "../common/wrapper";
 
@@ -26,17 +29,27 @@ const CategoryItem = ({ name }: { name: string }) => {
 };
 
 const Category = () => {
+	const { getTargetList } = useTargetAxios();
+	const [targetList, setTargetList] = useState<ITarget[] | null>(null);
+
+	useEffect(() => {
+		if (targetList == null) {
+			getTargetList()
+				.then((res) => {
+					setTargetList(res as ITarget[]);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}, []);
+
 	return (
 		<SimpleGrid columns={7} gap={6} mt={8}>
-			<CategoryItem name="ITEM" />
-			<CategoryItem name="ITEM" />
-			<CategoryItem name="ITEM" />
-			<CategoryItem name="ITEM" />
-			<CategoryItem name="ITEM" />
-			<CategoryItem name="ITEM" />
-			<CategoryItem name="ITEM" />
-			<CategoryItem name="ITEM" />
-			<CategoryItem name="ITEM" />
+			{targetList &&
+				targetList.map((target) => (
+					<CategoryItem key={"target" + target.name} name={target.name} />
+				))}
 		</SimpleGrid>
 	);
 };

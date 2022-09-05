@@ -18,7 +18,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../src/store/authentication/authentication.state";
 import axios from "../src/utils/axios";
-import { ILoginResponse, IResponse } from "../src/utils/axios/@types";
+import { ILoginResponse, IResponse } from "../src/utils/constants/@types";
 import { API_LOGIN } from "../src/utils/constants/api.constants";
 import { jwtUtils } from "../src/utils/jwtUtils";
 import { AlarmModal, IModalState } from "./components/common/alarmModal";
@@ -65,6 +65,8 @@ const LoginPage: NextPage = () => {
 		setEmailFormatError(false);
 	}, [email]);
 
+	//* 기타 메서드
+
 	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
@@ -99,9 +101,9 @@ const LoginPage: NextPage = () => {
 
 				setAuthState({
 					token: token,
-					id: content.id,
-					email: content.email,
-					nickname: content.nickname,
+					id: content.sub,
+					exp: content.exp,
+					auth: content.auth,
 				});
 
 				await router.push("/");
@@ -116,8 +118,6 @@ const LoginPage: NextPage = () => {
 				}));
 			});
 	};
-
-	//* 기타 메서드
 
 	return (
 		<Wrapper py={32}>

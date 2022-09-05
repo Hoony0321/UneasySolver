@@ -3,24 +3,16 @@ import React from "react";
 import { BsChatRight } from "react-icons/bs";
 import { GoPerson } from "react-icons/go";
 import { GrView } from "react-icons/gr";
+import { IPost } from "../../../src/utils/constants/@types";
 import { LOREM_TEXT } from "../../../src/utils/constants/string.constants";
 
-export interface IPropPost {
-	postId: number;
-	date: Date;
-	title: string;
-	content: string;
-	tags: string[];
-	author: string;
-	views: number;
-	comments: number;
-}
-
 const Post = ({
-	post: { postId, date, title, content, tags, author, views, comments },
+	post: { id, date, title, content, tags, author, hits, comments },
 }: {
-	post: IPropPost;
+	post: IPost;
 }) => {
+	console.log(content);
+
 	return (
 		<Flex
 			w={300}
@@ -33,7 +25,7 @@ const Post = ({
 			px={6}
 			py={8}>
 			<Text pos="absolute" top={4} right={6} color="gray.500">
-				{date.toLocaleDateString()}
+				{date.toString()}
 			</Text>
 			<Box mt={12}>
 				<Text fontSize="1.5em" fontWeight="bold">
@@ -47,7 +39,7 @@ const Post = ({
 			<Box pos="absolute" bottom={6} right={6} left={6}>
 				<Flex textColor="gray.500" gap={4}>
 					{tags.map((tag) => (
-						<Text key={postId.toString() + tag}>{"#" + tag}</Text>
+						<Text key={id.toString() + tag}>{"#" + tag}</Text>
 					))}
 				</Flex>
 				<Box border="1px solid" borderColor="primary" my={4} />
@@ -59,7 +51,7 @@ const Post = ({
 					<Flex gap={4}>
 						<Flex alignItems="center" gap={2}>
 							<GrView />
-							<Text>{views}</Text>
+							<Text>{hits}</Text>
 						</Flex>
 
 						<Flex alignItems="center" gap={2}>

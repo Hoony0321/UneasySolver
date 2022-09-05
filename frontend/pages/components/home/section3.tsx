@@ -7,7 +7,7 @@ import {
 	InputLeftElement,
 	SimpleGrid,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Container from "../common/container";
 import Wrapper from "../common/wrapper";
 
@@ -15,7 +15,9 @@ import { ImSad, ImKey } from "react-icons/im";
 import { SearchIcon } from "@chakra-ui/icons";
 
 import { LOREM_TEXT } from "../../../src/utils/constants/string.constants";
-import Post, { IPropPost } from "./post";
+import Post from "./post";
+import { IPost } from "../../../src/utils/constants/@types";
+import { usePostAxios } from "../../../src/utils/axios/postAxios";
 
 const SelectBox = () => {
 	return (
@@ -56,23 +58,22 @@ const SelectBox = () => {
 	);
 };
 
-const SamplePosts = Array(11)
-	.fill("")
-	.map(
-		(_, idx) =>
-			({
-				postId: idx,
-				date: new Date("2022-06-14"),
-				title: "불편 대상",
-				content: LOREM_TEXT,
-				tags: ["장소", "주차", "민원"],
-				author: "작성자",
-				views: 10,
-				comments: 5,
-			} as IPropPost),
-	);
-
 const Section3 = () => {
+	const [postList, setPostList] = useState<IPost[]>([]);
+	const { getPostList } = usePostAxios();
+
+	useEffect(() => {
+		if (postList.length == 0) {
+			getPostList()
+				.then((res) => {
+					setPostList(res as IPost[]);
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+	}, []);
+
 	return (
 		<Wrapper py={20}>
 			<Container flexDir="column">
@@ -84,8 +85,8 @@ const Section3 = () => {
 					spacing={20}
 					w="100%"
 					placeItems={"center"}>
-					{SamplePosts.map((post) => (
-						<Post key={post.postId} post={post} />
+					{postList.map((post) => (
+						<Post key={post.id} post={post} />
 					))}
 				</SimpleGrid>
 			</Container>

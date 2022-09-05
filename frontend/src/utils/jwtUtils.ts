@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import { IJwtContent } from "./axios/@types";
+import { IJwtContent } from "./constants/@types";
 
 export class jwtUtils {
 	static isAuth(token: string | null | undefined) {
@@ -11,6 +11,11 @@ export class jwtUtils {
 		} else {
 			return false;
 		}
+	}
+
+	static getIdFromToken(token: string) {
+		const decoded = jwtDecode<IJwtContent>(token);
+		return decoded.sub;
 	}
 
 	static getContentFromToken(token: string) {

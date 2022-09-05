@@ -19,10 +19,10 @@ import { Logo } from "../components/common/logo";
 import Container from "../components/common/container";
 import Wrapper from "../components/common/wrapper";
 import { jwtUtils } from "../../src/utils/jwtUtils";
-import { IJwtContent } from "../../src/utils/axios/@types";
 import { useRecoilState } from "recoil";
 import { authenticationAtom } from "../../src/store/authentication/authentication.state";
 import { useAuthenticationActions } from "../../src/store/authentication/authentication.action";
+import { useAuthAxios } from "../../src/utils/axios/authAxios";
 
 interface INavbar {
 	path: string;
@@ -33,17 +33,28 @@ const Navbar = ({ path }: INavbar) => {
 	const router = useRouter();
 	const [isLogin, setIsLogin] = useState<boolean>();
 	const [authState, setAuthState] = useRecoilState(authenticationAtom);
+	const { getAccessAuth } = useAuthAxios();
 
-	const onClickLogOut = () => {
-		console.log("실행");
+	const logout = () => {
 		localStorage.clear();
 		setAuthState((prev) => ({ ...prev, token: "" }));
+	};
+
+	const onClickLogOut = () => {
+		logout();
 		location.replace("/");
 	};
 
 	const onClickMypage = async () => {
-		console.log("click btn");
-		await router.push("/members/mypage");
+		await getAccessAuth(authState.token).then(async (res) => {
+			console.log("인증 결과 : ", res);
+			if (res) {
+				await router.push("/members/mypage");
+			} else {
+				await router.push("/login");
+				logout();
+			}
+		});
 	};
 
 	useEffect(() => {

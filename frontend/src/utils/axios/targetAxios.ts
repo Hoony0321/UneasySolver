@@ -1,18 +1,14 @@
 import { AxiosError } from "axios";
 import axios from ".";
 import { API_TARGET } from "../constants/api.constants";
-
-export interface ITarget {
-	id: number;
-	name: string;
-}
+import { ITarget } from "../constants/@types";
 
 export const useTargetAxios = () => {
 	const getTargetList = async () => {
 		try {
 			let result: ITarget[] = [];
-			await axios.get(API_TARGET).then((response) => {
-				result = response.data as ITarget[];
+			await axios.get<ITarget[]>(API_TARGET).then((response) => {
+				result = response.data;
 			});
 			return result;
 		} catch (error: unknown) {
