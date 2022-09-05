@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TokenRequestDto {
     private String accessToken;
-    private String refreshToekn;
+    private String refreshToken;
 }

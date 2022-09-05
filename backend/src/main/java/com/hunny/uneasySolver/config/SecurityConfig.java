@@ -6,6 +6,7 @@ import com.hunny.uneasySolver.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -32,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/h2-console/**", "/favicon.ico");
+        return (web) -> web.ignoring().antMatchers("/h2-console/**");
     }
 
     @Bean
@@ -61,16 +62,14 @@ public class SecurityConfig {
                 // 로그인, 회원가입 API는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/**").authenticated()
-                .antMatchers("/members/**").authenticated()
+                .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+                .antMatchers("/api/auth/**").authenticated()
+                .antMatchers("/api/members/**").authenticated()
                 .anyRequest().permitAll()
 
                 //JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig 클래스 적용
                 .and()
-                .apply(new JwtSecurityConfig(jwtProvider))
-
-                .and()
-                .httpBasic(Customizer.withDefaults());
+                .apply(new JwtSecurityConfig(jwtProvider));
 
         return http.build();
     }

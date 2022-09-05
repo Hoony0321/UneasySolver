@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +24,15 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return memberRepository.findByEmail(username)
-                .map(this::createUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+        Optional<Member> findOne = memberRepository.findByEmail(username);
+
+        if(findOne.isEmpty()){
+            throw new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다.");
+        }
+        else{
+            return createUserDetails(findOne.get());
+        }
+
     }
 
     // DB에 USER 값이 존재한다면 UserDetails 객체를 만들어서 반환

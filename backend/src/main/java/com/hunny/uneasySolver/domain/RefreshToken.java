@@ -1,8 +1,6 @@
 package com.hunny.uneasySolver.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
+@Setter
 @Getter
 @Table(name = "refresh_token")
 @NoArgsConstructor

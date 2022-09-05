@@ -3,9 +3,8 @@ package com.hunny.uneasySolver.api;
 import com.hunny.uneasySolver.domain.Post;
 import com.hunny.uneasySolver.dto.PostCreateRequest;
 import com.hunny.uneasySolver.dto.PostListResponse;
-import com.hunny.uneasySolver.form.PostCreateForm;
 import com.hunny.uneasySolver.repository.TargetRepository;
-import com.hunny.uneasySolver.security.JwtUtils;
+import com.hunny.uneasySolver.security.JwtProvider;
 import com.hunny.uneasySolver.service.MemberService;
 import com.hunny.uneasySolver.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +26,6 @@ import java.util.List;
 public class PostApiController {
 
     private final PostService postService;
-    private final MemberService memberService;
-    private final TargetRepository targetRepository;
-    private final JwtUtils jwtUtils;
 
     @GetMapping("/api/posts")
     public List<PostListResponse> postList(Model model){
@@ -49,10 +45,7 @@ public class PostApiController {
 
     @PostMapping("/api/auth/posts/create")
     public String createPost(HttpServletRequest request, @RequestBody @Valid PostCreateRequest post){
-        log.info(request.getHeader("auth"));
-        if(jwtUtils.validationToken(request.getHeader("auth"))){
-            postService.createPostByRequest(post);
-        }
+        postService.createPostByRequest(post);
         return "redirect:/";
     }
 

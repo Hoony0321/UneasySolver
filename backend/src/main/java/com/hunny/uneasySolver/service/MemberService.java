@@ -1,12 +1,13 @@
 package com.hunny.uneasySolver.service;
 
-import com.hunny.uneasySolver.security.JwtUtils;
 import com.hunny.uneasySolver.domain.Member;
 import com.hunny.uneasySolver.dto.MemberRegisterRequest;
 import com.hunny.uneasySolver.exception.LoginException;
-import com.hunny.uneasySolver.form.MemberLoginForm;
 import com.hunny.uneasySolver.dto.MemberLoginRequest;
 import com.hunny.uneasySolver.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +15,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
-    public MemberService(MemberRepository memberRepository, JwtUtils jwtUtils) {
-        this.memberRepository = memberRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public Long join(Member member){
@@ -46,7 +46,7 @@ public class MemberService {
         if(result.isEmpty()){throw new LoginException("존재하지 않는 회원 이메일입니다.");}
 
         Member member = result.get();
-        if(!member.comparePassword(request.getPassword())){
+        if(!passwordEncoder.matches(request.getPassword(), member.getPassword())){
             throw new LoginException("로그인에 실패하셨습니다.");
         }
 

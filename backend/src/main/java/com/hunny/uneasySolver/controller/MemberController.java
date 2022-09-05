@@ -46,11 +46,11 @@ public class MemberController {
         return "/members/listPage";
     }
 
-    @GetMapping("members/login")
-    public String login(Model model){
-        model.addAttribute("form", new MemberLoginForm());
-        return "/members/loginPage";
-    }
+//    @GetMapping("members/login")
+//    public String login(Model model){
+//        model.addAttribute("form", new MemberLoginForm());
+//        return "/members/loginPage";
+//    }
 
 //    @PostMapping("members/login")
 //    public void handleLogin(HttpServletResponse response, MemberLoginForm form){

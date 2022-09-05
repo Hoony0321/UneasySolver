@@ -1,7 +1,10 @@
 package com.hunny.uneasySolver.service;
 
+import com.hunny.uneasySolver.domain.Member;
 import com.hunny.uneasySolver.domain.RefreshToken;
 import com.hunny.uneasySolver.dto.MemberLoginRequest;
+import com.hunny.uneasySolver.dto.MemberRequestDto;
+import com.hunny.uneasySolver.dto.MemberResponseDto;
 import com.hunny.uneasySolver.dto.TokenRequestDto;
 import com.hunny.uneasySolver.repository.MemberRepository;
 import com.hunny.uneasySolver.repository.RefreshTokenRepository;
@@ -24,6 +27,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+
+    @Transactional
+    public MemberResponseDto signup(MemberRequestDto memberRequestDto) {
+        Member member = memberRequestDto.toMember(passwordEncoder);
+
+        Long saveId = memberRepository.save(member);
+        return MemberResponseDto.of(member);
+    }
 
     @Transactional
     public TokenDto login(MemberLoginRequest request){
@@ -54,7 +65,7 @@ public class AuthService {
     public TokenDto reissueToken(TokenRequestDto tokenRequestDto){
 
         // RefreshToken 적용
-        if(!jwtProvider.validateToken(tokenRequestDto.getRefreshToekn())){
+        if(!jwtProvider.validateToken(tokenRequestDto.getRefreshToken())){
             throw new RuntimeException("Refresh Token이 유효하지 않습니다.");
         }
 
@@ -66,7 +77,7 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("로그아웃 된 사용자입니다."));
 
         // Refresh 토큰 일치하는지 검사
-        if(!refreshToken.getValue().equals(tokenRequestDto.getRefreshToekn())){
+        if(!refreshToken.getValue().equals(tokenRequestDto.getRefreshToken())){
             throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
         }
 

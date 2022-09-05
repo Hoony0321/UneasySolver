@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
+@Setter
 public class Target {
 
     @Id @GeneratedValue

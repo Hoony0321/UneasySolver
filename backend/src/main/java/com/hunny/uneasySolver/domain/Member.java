@@ -3,10 +3,7 @@ package com.hunny.uneasySolver.domain;
 import com.hunny.uneasySolver.dto.MemberRegisterRequest;
 import com.hunny.uneasySolver.form.MemberCreateForm;
 import com.hunny.uneasySolver.security.Authority;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
@@ -32,6 +30,7 @@ public class Member {
     @NotNull
     private String password;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
@@ -65,6 +64,30 @@ public class Member {
 
     @OneToMany(mappedBy = "solver")
     private List<ChatRoom> solveRoom = new ArrayList<ChatRoom>();
+
+
+    //=== Test 생성 메서드 ===//
+    @Builder
+    public Member(String email, String password, Authority authority, String nickname, String address, Integer age, Boolean sex, String phoneNumber, Integer point, Job job, List<Comment> comments, List<Post> posts, List<ChatRoom> uneasyRoom, List<ChatRoom> solveRoom) {
+        this.email = email;
+        this.password = password;
+        this.authority = authority;
+        this.nickname = nickname;
+        this.address = address;
+        this.age = age;
+        this.sex = sex;
+        this.phoneNumber = phoneNumber;
+        this.point = point;
+        this.job = job;
+        this.comments = comments;
+        this.posts = posts;
+        this.uneasyRoom = uneasyRoom;
+        this.solveRoom = solveRoom;
+    }
+
+
+
+
 
     //=== 생성 메서드 ====//
     public static Member createMember(String email, String password, String nickname, String region, Job job, Integer age, Boolean sex, String phoneNumber, Integer point) {
