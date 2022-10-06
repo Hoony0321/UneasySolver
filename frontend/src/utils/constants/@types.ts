@@ -23,6 +23,7 @@ export interface ILoginResponse {
 
 export interface IJwtContent {
 	sub: number;
+	email: string;
 	auth: string;
 	exp: number;
 }

@@ -102,6 +102,7 @@ const LoginPage: NextPage = () => {
 				setAuthState({
 					token: token,
 					id: content.sub,
+					email: content.email,
 					exp: content.exp,
 					auth: content.auth,
 				});
