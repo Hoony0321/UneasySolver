@@ -8,7 +8,7 @@
 
 <p align="center">
   <br>
-  <img src="./images/Logo.png">
+  ![Logo](https://user-images.githubusercontent.com/50730897/194294355-1d9e2b86-06de-45ec-bc4d-5a8b280f2182.png)
   <br>
   <br>
   <br>
@@ -71,12 +71,12 @@ JWT로 AccessToken과 RefreshToken을 통해 인증 시스템 구현
 <br>
 
 ### 회원가입 페이지
-<img src="./images/signUpPage.png">
+![signUpPage](https://user-images.githubusercontent.com/50730897/194294368-a0cf6f57-542b-4ebd-a9c9-eb557c94f354.png)
 
 <br>
 
 ### 메인페이지 
-<img src="./images/mainPage.png">
+![MainPage](https://user-images.githubusercontent.com/50730897/194294357-46f0a9c6-78b9-4014-b7be-5534ff6b5618.png)
 
 <br>
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/eba03448-e6c9-4d6c-95a9-88bfb8b1c7b9/Untitled.png)
@@ -84,4 +84,8 @@ JWT로 AccessToken과 RefreshToken을 통해 인증 시스템 구현
 
 ### Notion Link
 https://friendly-oil-ffd.notion.site/52db6950d3aa48a683eaf91dc33fe6d8
+  
+  
+
+
 
