@@ -1,6 +1,7 @@
 package com.hunny.uneasySolver.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 public class Post extends BaseTimeEntity{
 
     @Id @GeneratedValue
@@ -20,7 +22,7 @@ public class Post extends BaseTimeEntity{
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_id")
     private Target target;
 

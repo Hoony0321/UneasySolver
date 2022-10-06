@@ -11,9 +11,11 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Getter
+@Setter
 public class Target {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @Column(name = "target_id")
     private Long id;
 

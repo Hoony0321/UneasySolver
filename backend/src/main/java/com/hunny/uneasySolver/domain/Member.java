@@ -2,7 +2,8 @@ package com.hunny.uneasySolver.domain;
 
 import com.hunny.uneasySolver.dto.MemberRegisterRequest;
 import com.hunny.uneasySolver.form.MemberCreateForm;
-import lombok.Getter;
+import com.hunny.uneasySolver.security.Authority;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
     @GeneratedValue @Id
@@ -26,6 +29,10 @@ public class Member {
 
     @NotNull
     private String password;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
 
     @NotNull
     @Column(unique = true)
@@ -58,6 +65,30 @@ public class Member {
     @OneToMany(mappedBy = "solver")
     private List<ChatRoom> solveRoom = new ArrayList<ChatRoom>();
 
+
+    //=== Test 생성 메서드 ===//
+    @Builder
+    public Member(String email, String password, Authority authority, String nickname, String address, Integer age, Boolean sex, String phoneNumber, Integer point, Job job, List<Comment> comments, List<Post> posts, List<ChatRoom> uneasyRoom, List<ChatRoom> solveRoom) {
+        this.email = email;
+        this.password = password;
+        this.authority = authority;
+        this.nickname = nickname;
+        this.address = address;
+        this.age = age;
+        this.sex = sex;
+        this.phoneNumber = phoneNumber;
+        this.point = point;
+        this.job = job;
+        this.comments = comments;
+        this.posts = posts;
+        this.uneasyRoom = uneasyRoom;
+        this.solveRoom = solveRoom;
+    }
+
+
+
+
+
     //=== 생성 메서드 ====//
     public static Member createMember(String email, String password, String nickname, String region, Job job, Integer age, Boolean sex, String phoneNumber, Integer point) {
         Member member = new Member();
@@ -81,10 +112,11 @@ public class Member {
         member.nickname = request.getNickname();
         member.address = request.getAddress();
         member.job = null; // TODO 추후에 로직 추가
-        member.age = request.getAge();
-        member.sex = request.getSex();
+        member.age = null;
+        member.sex = null;
         member.phoneNumber = request.getPhoneNumber();
         member.point = 0;
+        member.authority = Authority.ROLE_USER;
 
         return member;
     }

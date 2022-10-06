@@ -1,10 +1,12 @@
 package com.hunny.uneasySolver.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
+@Setter
 @Getter
 public class ChatRoom extends BaseTimeEntity {
 

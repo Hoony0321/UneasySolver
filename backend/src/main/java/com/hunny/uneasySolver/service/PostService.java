@@ -4,7 +4,9 @@ import com.hunny.uneasySolver.domain.Member;
 import com.hunny.uneasySolver.domain.Post;
 import com.hunny.uneasySolver.domain.PostContent;
 import com.hunny.uneasySolver.domain.Target;
+import com.hunny.uneasySolver.dto.PostCreateRequest;
 import com.hunny.uneasySolver.form.PostCreateForm;
+import com.hunny.uneasySolver.repository.ContentRepository;
 import com.hunny.uneasySolver.repository.PostRepository;
 import com.hunny.uneasySolver.repository.TargetRepository;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,13 @@ public class PostService {
     private final MemberService memberService;
     private final TargetRepository targetRepository;
 
-    public PostService(PostRepository postRepository, MemberService memberService, TargetRepository targetRepository) {
+    private final ContentRepository contentRepository;
+
+    public PostService(PostRepository postRepository, MemberService memberService, TargetRepository targetRepository, ContentRepository contentRepository) {
         this.postRepository = postRepository;
         this.memberService = memberService;
         this.targetRepository = targetRepository;
+        this.contentRepository = contentRepository;
     }
 
 
@@ -34,6 +39,15 @@ public class PostService {
         Target target = targetRepository.findById(form.getTargetId()).get();
 
         this.publishPost(member, target, content, form.getTitle(), form.getUneasyIdx(), form.getAddress());
+    }
+
+    public void createPostByRequest(PostCreateRequest request){
+        Member member = memberService.findById(request.getId()).get();
+        System.out.println(request.getTarget());
+        Target target = targetRepository.findById(request.getTarget()).get();
+        PostContent content = PostContent.createContent(request.getContent());
+
+        this.publishPost(member, target, content, request.getTitle(), request.getUneasyIdx(), request.getAddress());
     }
 
     public Long publishPost(Member author, Target target, PostContent postContent,String title, Integer uneasyIdx, String address){
