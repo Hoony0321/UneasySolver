@@ -22,7 +22,7 @@ public class Post extends BaseTimeEntity{
     @JoinColumn(name = "member_id")
     private Member author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_id")
     private Target target;
 

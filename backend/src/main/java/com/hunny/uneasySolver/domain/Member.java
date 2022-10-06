@@ -112,8 +112,8 @@ public class Member {
         member.nickname = request.getNickname();
         member.address = request.getAddress();
         member.job = null; // TODO 추후에 로직 추가
-        member.age = request.getAge();
-        member.sex = request.getSex();
+        member.age = null;
+        member.sex = null;
         member.phoneNumber = request.getPhoneNumber();
         member.point = 0;
         member.authority = Authority.ROLE_USER;

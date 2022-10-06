@@ -1,6 +1,7 @@
 package com.hunny.uneasySolver.security;
 
 
+import com.hunny.uneasySolver.domain.Member;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -41,19 +42,16 @@ public class JwtProvider {
     }
 
     // JWT 생성
-    public TokenDto generateToken(Authentication authentication){
-        // 권한 가져오기
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
+    public TokenDto generateToken(Member member){
+        // 현재 시간 가져오기
         long now = (new Date()).getTime();
+        Date accessTokenExpireTime = new Date(now + accessTokenValidTime);
 
         // Access Token 생성
-        Date accessTokenExpireTime = new Date(now + accessTokenValidTime);
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())    // payload "sub" : "name"
-                .claim(AUTHORITIES_KEY, authorities)     // payload : "auth" : "ROLE_USER" or "ROLE_AUTH"
+                .setSubject(member.getId().toString())    // payload "sub" : "name"
+                .claim(AUTHORITIES_KEY, member.getAuthority())     // payload : "auth" : "ROLE_USER" or "ROLE_AUTH"
+                .claim("email", member.getEmail())
                 .setExpiration(accessTokenExpireTime)    // payload : "exp" : 1516239022(에시)
                 .signWith(key, SignatureAlgorithm.HS512) // header "alg" : "HS512"
                 .compact();

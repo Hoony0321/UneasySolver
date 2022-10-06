@@ -55,8 +55,9 @@ public class MemberService {
     }
 
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void join(MemberRegisterRequest request) {
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member member = Member.registerMember(request);
         memberRepository.save(member);
     }

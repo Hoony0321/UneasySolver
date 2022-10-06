@@ -40,9 +40,4 @@ public class AuthController {
         return ResponseEntity.ok(authService.signup(request));
     }
 
-    @PostMapping("/api/test/login")
-    public ResponseEntity<TokenDto> login(@RequestBody MemberLoginRequest request){
-        return ResponseEntity.ok(authService.login(request));
-    }
-
 }

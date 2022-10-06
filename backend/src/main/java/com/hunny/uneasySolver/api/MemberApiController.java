@@ -32,9 +32,9 @@ public class MemberApiController {
     }
 
     @PostMapping("/api/login")
-    public CommonResponse<TokenDto> login(@RequestBody @Valid MemberLoginRequest request){
+    public CommonResponse<Object> login(@RequestBody MemberLoginRequest request){
         TokenDto tokenDto = authService.login(request);
-        return responseService.getSuccessResponse("로그인에 성공했습니다.", tokenDto);
+        return responseService.getSuccessResponse("로그인 성공", tokenDto);
     }
 
     @PostMapping("/api/register")

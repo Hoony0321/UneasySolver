@@ -65,6 +65,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
                 .antMatchers("/api/auth/**").authenticated()
                 .antMatchers("/api/members/**").authenticated()
+                .antMatchers("/api/member/**").authenticated()
                 .anyRequest().permitAll()
 
                 //JwtFilter를 addFilterBefore로 등록했던 JwtSecurityConfig 클래스 적용

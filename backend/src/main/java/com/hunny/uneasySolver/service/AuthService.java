@@ -18,6 +18,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -38,6 +40,13 @@ public class AuthService {
 
     @Transactional
     public TokenDto login(MemberLoginRequest request){
+        //멤버 정보 가져오기
+        Optional<Member> findOne = memberRepository.findByEmail(request.getEmail());
+        if(findOne.isEmpty()){
+            throw new RuntimeException("해당 이메일 계정은 존재하지 않습니다.");
+        }
+        Member member = findOne.get();
+
 
         // Login id/pw 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
@@ -47,7 +56,7 @@ public class AuthService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
         // 인증 정보를 기반으로 JWT 토큰 생성
-        TokenDto tokenDto = jwtProvider.generateToken(authentication);
+        TokenDto tokenDto = jwtProvider.generateToken(member);
 
         // RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
@@ -82,7 +91,8 @@ public class AuthService {
         }
 
         // 새로운 토큰 생성
-        TokenDto tokenDto = jwtProvider.generateToken(authentication);
+        Member member = memberRepository.findByEmail(authentication.getName()).get();
+        TokenDto tokenDto = jwtProvider.generateToken(member);
 
         // 저장소 정보 업데이트
         RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());
