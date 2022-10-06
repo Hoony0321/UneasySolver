@@ -9,7 +9,9 @@
 <p align="center">
   <br>
   
-  ![Logo](https://user-images.githubusercontent.com/50730897/194294355-1d9e2b86-06de-45ec-bc4d-5a8b280f2182.png){: width="70%"){: .center}
+  <center>
+    <image src="https://user-images.githubusercontent.com/50730897/194294355-1d9e2b86-06de-45ec-bc4d-5a8b280f2182.png" width="70%"/>
+  </center>
   
   <br>
   <br>
