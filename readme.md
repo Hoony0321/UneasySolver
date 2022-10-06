@@ -8,7 +8,9 @@
 
 <p align="center">
   <br>
-  ![Logo](https://user-images.githubusercontent.com/50730897/194294355-1d9e2b86-06de-45ec-bc4d-5a8b280f2182.png)
+  
+  ![Logo](https://user-images.githubusercontent.com/50730897/194294355-1d9e2b86-06de-45ec-bc4d-5a8b280f2182.png){: width="70%"){: .center}
+  
   <br>
   <br>
   <br>
@@ -66,17 +68,17 @@ JWT로 AccessToken과 RefreshToken을 통해 인증 시스템 구현
 <br>
 
 ### 로그인 페이지
-![loginPage](https://user-images.githubusercontent.com/50730897/194294348-b94db83d-bc49-4d67-88e5-f00b5fb8ee99.png)
+![loginPage](https://user-images.githubusercontent.com/50730897/194294348-b94db83d-bc49-4d67-88e5-f00b5fb8ee99.png){: width="70%"){: .center}
 
 <br>
 
 ### 회원가입 페이지
-![signUpPage](https://user-images.githubusercontent.com/50730897/194294368-a0cf6f57-542b-4ebd-a9c9-eb557c94f354.png)
+![signUpPage](https://user-images.githubusercontent.com/50730897/194294368-a0cf6f57-542b-4ebd-a9c9-eb557c94f354.png){: width="70%"){: .center}
 
 <br>
 
 ### 메인페이지 
-![MainPage](https://user-images.githubusercontent.com/50730897/194294357-46f0a9c6-78b9-4014-b7be-5534ff6b5618.png)
+![MainPage](https://user-images.githubusercontent.com/50730897/194294357-46f0a9c6-78b9-4014-b7be-5534ff6b5618.png){: width="70%"){: .center}
 
 <br>
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/eba03448-e6c9-4d6c-95a9-88bfb8b1c7b9/Untitled.png)
