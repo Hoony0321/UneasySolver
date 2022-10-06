@@ -72,7 +72,7 @@ JWT로 AccessToken과 RefreshToken을 통해 인증 시스템 구현
 ### 로그인 페이지
   
 <center>
-  <image src="https://user-images.githubusercontent.com/50730897/194294355-1d9e2b86-06de-45ec-bc4d-5a8b280f2182.png" width="50%" height="50%"/>
+  <image src="https://user-images.githubusercontent.com/50730897/194296119-5e9a403b-ca56-4c7e-98ea-2b3b1840c61d.png" width="50%" height="50%"/>
 </center>  
 
 
@@ -92,8 +92,7 @@ JWT로 AccessToken과 RefreshToken을 통해 인증 시스템 구현
   <image src="https://user-images.githubusercontent.com/50730897/194294357-46f0a9c6-78b9-4014-b7be-5534ff6b5618.png" width="50%" height="50%"/>
 </center>  
 
-<br>
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/eba03448-e6c9-4d6c-95a9-88bfb8b1c7b9/Untitled.png)
+
 <br>
 
 ### Notion Link
